@@ -25,5 +25,5 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run test:package
-      - run: npm run build:executable
+      - run: npm run package:executable
       - run: npm pack --dry-run
