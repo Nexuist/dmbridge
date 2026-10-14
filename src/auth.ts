@@ -21,7 +21,7 @@ import {
 } from "./protocol.js";
 
 const NAME_PATTERN = /^[a-z0-9][a-z0-9._-]{0,63}$/;
-const STATE_KEY_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
+const STATE_KEY_PATTERN = /^[A-Za-z0-9_-]{1,128}$/;
 
 const StoredCredentialSchema = z.object({
   version: z.literal(1),

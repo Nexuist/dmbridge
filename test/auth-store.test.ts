@@ -86,7 +86,7 @@ test("expired OAuth PKCE state is pruned before a new authorization", async () =
       redirectURI: "http://localhost/callback",
       realmTokenIssuerURL: null,
     },
-    state: "a".repeat(32),
+    state: `_${"a".repeat(31)}`,
     verifier: "expired-verifier",
     expiresAt: Date.now() - 1,
   });
@@ -100,12 +100,12 @@ test("expired OAuth PKCE state is pruned before a new authorization", async () =
       redirectURI: "http://localhost/callback",
       realmTokenIssuerURL: null,
     },
-    state: "b".repeat(32),
+    state: `-${"b".repeat(31)}`,
     verifier: "current-verifier",
     expiresAt: Date.now() + 60_000,
   });
   assert.deepEqual(
     await readdir(join(home, "state", "x-oauth")),
-    [`${"b".repeat(32)}.json`],
+    [`-${"b".repeat(31)}.json`],
   );
 });
