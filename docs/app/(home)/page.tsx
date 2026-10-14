@@ -31,8 +31,9 @@ export default function HomePage() {
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-fd-muted-foreground sm:text-xl">
               dmbridge gives them one reliable CLI to read, reply, react, and
-              download attachments across X and Instagram. More platforms are on
-              the way.
+              download attachments across X and Instagram. It runs entirely on
+              your machine and talks directly to each platform—no middleman
+              service, no subscription. Free and open source.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
