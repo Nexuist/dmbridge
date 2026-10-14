@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.1.5-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.2.0-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -309,9 +309,8 @@ dmbridge x reactions add x-message-456 \
 Reply with `sick meme`:
 
 ```sh
-printf '%s' '{"type":"text","text":"sick meme"}' |
-  dmbridge x messages reply x-message-456 \
-    --account personal --request - --dry-run --pretty
+dmbridge x messages reply x-message-456 "sick meme" \
+  --account personal --dry-run --pretty
 ```
 
 ```json
@@ -334,9 +333,8 @@ printf '%s' '{"type":"text","text":"sick meme"}' |
 ```
 
 ```sh
-printf '%s' '{"type":"text","text":"sick meme"}' |
-  dmbridge x messages reply x-message-456 \
-    --account personal --request - --pretty
+dmbridge x messages reply x-message-456 "sick meme" \
+  --account personal --pretty
 ```
 
 ```json

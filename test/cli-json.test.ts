@@ -79,7 +79,7 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
     const envelope = JSON.parse((await runCLI(args)).stdout) as {
       result: { version: string; protocolVersion: number; schemaVersion: number };
     };
-    assert.equal(envelope.result.version, "2.1.5");
+    assert.equal(envelope.result.version, "2.2.0");
     assert.equal(envelope.result.protocolVersion, 1);
     assert.equal(envelope.result.schemaVersion, 5);
   }
@@ -132,6 +132,95 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
       return true;
     },
   );
+});
+
+test("message reply accepts direct text or a structured request", async () => {
+  const home = await mkdtemp(join(tmpdir(), "dmbridge-reply-"));
+  const store = new AuthStore(home);
+  await store.initialize();
+  await store.storeCredential("x", "personal", xCredential());
+
+  const direct = JSON.parse(
+    (
+      await runCLI([
+        "x",
+        "messages",
+        "reply",
+        "x-message-456",
+        "sick meme",
+        "--account",
+        "personal",
+        "--dry-run",
+        "--home",
+        home,
+      ])
+    ).stdout,
+  ) as {
+    command: string;
+    result: { request: { type: string; text: string } };
+  };
+  assert.equal(direct.command, "x messages reply x-message-456");
+  assert.deepEqual(direct.result.request, { type: "text", text: "sick meme" });
+
+  const requestPath = join(home, "reply.json");
+  await writeFile(
+    requestPath,
+    JSON.stringify({
+      type: "image",
+      content: { sourceURL: "https://example.com/meme.jpg" },
+    }),
+    { mode: 0o600 },
+  );
+  const structured = JSON.parse(
+    (
+      await runCLI([
+        "x",
+        "messages",
+        "reply",
+        "x-message-456",
+        "--account",
+        "personal",
+        "--request",
+        requestPath,
+        "--dry-run",
+        "--home",
+        home,
+      ])
+    ).stdout,
+  ) as { result: { request: { type: string } } };
+  assert.equal(structured.result.request.type, "image");
+
+  for (const args of [
+    ["x", "messages", "reply", "x-message-456"],
+    ["x", "messages", "reply", "x-message-456", ""],
+    [
+      "x",
+      "messages",
+      "reply",
+      "x-message-456",
+      "sick meme",
+      "--request",
+      requestPath,
+    ],
+  ]) {
+    await assert.rejects(
+      runCLI([
+        ...args,
+        "--account",
+        "personal",
+        "--dry-run",
+        "--home",
+        home,
+      ]),
+      (error: unknown) => {
+        const envelope = JSON.parse(
+          (error as { stdout?: string }).stdout ?? "{}",
+        ) as { error?: { code?: string } };
+        assert.equal(envelope.error?.code, "bridge.invalidRequest");
+        return true;
+      },
+    );
+  }
 });
 
 test("destructive local operations require confirmation and remain idempotent", async () => {

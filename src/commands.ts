@@ -45,6 +45,7 @@ type Definition = {
   scope: Scope;
   options?: readonly OptionSpec[];
   noRefresh?: boolean;
+  commandOperandCount?: number;
   handler: (context: Context) => unknown | Promise<unknown>;
 };
 
@@ -172,6 +173,22 @@ const parseSendRequest = (value: unknown) => {
 
 const sendRequest = async (context: Context) =>
   parseSendRequest(await readRequestJSON(requiredOption(context, "request")));
+
+const replyRequest = async (context: Context) => {
+  const text = context.operands[1];
+  const requestPath = option(context, "request");
+  if (text !== undefined && requestPath !== null) {
+    throw invalidRequest("Reply text cannot be combined with --request.");
+  }
+  if (text !== undefined) {
+    if (!text.trim()) throw invalidRequest("Reply text cannot be empty.");
+    return parseSendRequest({ type: "text", text });
+  }
+  if (requestPath !== null) {
+    return parseSendRequest(await readRequestJSON(requestPath));
+  }
+  throw invalidRequest("Reply requires text or --request <file-or-dash>.");
+};
 
 const dryRunResult = (
   context: Context,
@@ -504,12 +521,19 @@ const definitions: readonly Definition[] = [
     (value, messageID) => value.getMessage(messageID),
   ),
   ...sendActions.map(([action, targetName, method]): Definition => ({
-    path: `<provider> messages ${action} <${targetName}>`,
+    path: action === "reply"
+      ? "<provider> messages reply <messageID> [text]"
+      : `<provider> messages ${action} <${targetName}>`,
     scope: "adapter",
-    options: [...requestFlags, ...dryRun],
+    options: action === "reply"
+      ? ["--request <file-or-dash>", ...dryRun]
+      : [...requestFlags, ...dryRun],
+    ...(action === "reply" ? { commandOperandCount: 1 } : {}),
     handler: async (context) => {
       const target = operand(context);
-      const request = await sendRequest(context);
+      const request = action === "reply"
+        ? await replyRequest(context)
+        : await sendRequest(context);
       return mutation(
         context,
         action,
@@ -635,7 +659,7 @@ export const getCLIHelp = (prefix: string[] = []) => {
     "stdout contains only the JSON result contract",
     "progress, warnings, and diagnostics are written only to stderr",
     "select a provider explicitly; there is no unified inbox",
-    "secrets and mutation bodies are read from files or stdin, never flags",
+    "secrets and structured mutation bodies are read from files or stdin, never flags",
     "attachment downloads require --destination-url=file:///absolute/path",
   ],
   globalOptions: [
@@ -781,7 +805,12 @@ export const parseCommand = (argv: string[]): ParsedCommand => {
             : null;
         invocation = {
           definition,
-          command: [...commandTokens, ...operands],
+          command: [
+            ...commandTokens,
+            ...(definition.commandOperandCount === undefined
+              ? operands
+              : operands.slice(0, definition.commandOperandCount)),
+          ],
           operands,
           options: command.optsWithGlobals<Values>(),
           provider,

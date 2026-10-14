@@ -17,7 +17,7 @@
   "dmbridge <provider> messages list <conversationID> [--account <name>] [--limit <number>] [--cursor <cursor>]",
   "dmbridge <provider> messages get <messageID> [--account <name>]",
   "dmbridge <provider> messages send <conversationID> [--account <name>] --request <file-or-dash> [--dry-run]",
-  "dmbridge <provider> messages reply <messageID> [--account <name>] --request <file-or-dash> [--dry-run]",
+  "dmbridge <provider> messages reply <messageID> [text] [--account <name>] [--request <file-or-dash>] [--dry-run]",
   "dmbridge <provider> messages edit <messageID> [--account <name>] --request <file-or-dash> [--dry-run]",
   "dmbridge <provider> messages delete <messageID> [--account <name>] [--dry-run] [--yes]",
   "dmbridge <provider> messages read <messageID> [--account <name>] [--dry-run]",

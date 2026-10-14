@@ -48,11 +48,20 @@ may mean that the provider accepted the operation before the response was lost.
 
 ## Input and secrets
 
-Pass ordinary targets as arguments. Pass structured bodies with
+Pass ordinary targets as arguments. A reply accepts direct text as its second
+argument. Use that form only when the text may safely appear in shell history
+and process listings. Pass structured or sensitive bodies with
 `--request <file>` or `--request -` for stdin. Pass an XChat passcode with
 `--secret <file>` or `--secret -`. Never put access tokens, OAuth callback URLs,
-authorization codes, client secrets, passcodes, or message bodies in shell
-arguments, logs, prompts, or persisted transcripts.
+authorization codes, client secrets, or passcodes in shell arguments, logs,
+prompts, or persisted transcripts.
+
+Example direct text reply:
+
+```sh
+dmbridge x messages reply MESSAGE_ID "hello" --account personal --dry-run \
+  --no-input --timeout 30s
+```
 
 Example read:
 
