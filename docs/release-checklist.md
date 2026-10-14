@@ -15,7 +15,8 @@ npm run package:executable
 
 - Command and schema snapshots have no unexplained diff.
 - The packed file list contains the compiled CLI, README, license, agent usage
-  guide, and package metadata, with no source tests or local credentials.
+  guide, connection scripts, and package metadata, with no source tests or local
+  credentials.
 - The isolated packed-package smoke test can invoke `dmbridge help`,
   `dmbridge version`, and JSON output.
 - Offline tests cover every mutation path and unknown-outcome failure behavior.
@@ -80,12 +81,12 @@ Before tagging:
    `package-lock.json` version.
 2. Complete the automated, contract, and applicable live read-only gates above.
 3. Commit and push a clean release commit.
-4. Create and push the exact matching tag, such as `v2.0.0` for package version
-   `2.0.0`.
+4. Create and push the exact matching tag, such as `v2.1.0` for package version
+   `2.1.0`.
 
 ```sh
-git tag -a v2.0.0 -m "dmbridge v2.0.0"
-git push origin v2.0.0
+git tag -a v2.1.0 -m "dmbridge v2.1.0"
+git push origin v2.1.0
 ```
 
 The workflow rejects a tag that does not exactly match `v` plus the version in

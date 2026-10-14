@@ -1,6 +1,6 @@
 {
   "name": "dmbridge",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "A provider-neutral JSON CLI for direct messages.",
   "type": "module",
   "bin": {
@@ -9,6 +9,8 @@
   "files": [
     "dist/src",
     "docs/agent-usage.md",
+    "scripts/connect-ig.sh",
+    "scripts/connect-x.sh",
     "README.md",
     "LICENSE"
   ],

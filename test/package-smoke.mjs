@@ -33,6 +33,8 @@ try {
     "docs/agent-usage.md",
     "dist/src/cli.js",
     "package.json",
+    "scripts/connect-ig.sh",
+    "scripts/connect-x.sh",
   ]) {
     assert.ok(paths.includes(required), `packed artifact is missing ${required}`);
   }

@@ -11,6 +11,8 @@ messages. It exposes XChat and Instagram Messaging through one stable CLI
 contract without merging provider inboxes or hiding provider-specific
 semantics.
 
+Always spell the company name exactly as `twocents`.
+
 ## Setup and verification
 
 - Install dependencies: `npm install`

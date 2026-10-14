@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.0.1-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.1.0-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -14,20 +14,21 @@ requests, and downloading attachments.
 
 ## Why this exists
 
-[Two Cents](https://twocents.com) runs a lot of social media accounts. We wanted
+[twocents](https://twocents.com) runs a lot of social media accounts. We wanted
 one practical way for our agents to handle incoming messages without teaching
 every agent a different API, authentication flow, and response format.
 
 So we built dmbridge.
 
-## Vibe coded, proudly
+## How it was built
 
-This is a vibe-coded project, built with Codex and GPT-5.6.
+dmbridge was vibe coded with Codex and GPT-5.6 against the real workflows we run
+at twocents. The speed came from the model; confidence comes from tests that pin
+down the behavior.
 
-That does not mean it is untested. dmbridge has an offline test suite covering
-authentication, schemas, pagination, provider fixtures, encryption paths,
-mutations, attachments, and failure behavior. It also has an optional live,
-read-only test suite that can exercise configured X and Instagram accounts.
+The offline suite covers authentication, schemas, pagination, provider fixtures,
+encryption paths, mutations, attachments, and failure behavior. An optional
+live, read-only suite can exercise configured X and Instagram accounts.
 
 You should still review what your agent intends to do. Every mutation supports
 `--dry-run`, destructive actions require confirmation, and failures report
@@ -85,106 +86,115 @@ need to appear in shell arguments.
 
 ### Instagram
 
-Add an Instagram professional account with its access token:
+Instagram's messaging API requires a professional account and a Meta developer
+app. Start with Instagram's instructions for creating a
+[Creator account](https://help.instagram.com/2358103564437429) or
+[Business account](https://help.instagram.com/502981923235522), then
+[register as a Meta developer](https://developers.facebook.com/docs/development/register/),
+[create a Meta app](https://developers.facebook.com/docs/development/create-an-app/),
+and follow Meta's
+[Instagram API setup](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/get-started/)
+to get an access token.
+
+From a repository checkout, with `dmbridge` installed, the setup script asks for
+the account name, optional dmbridge home, and access token one line at a time.
+The token is hidden while you type and passed through a temporary mode-`0600`
+file:
 
 ```sh
-printf '%s' '{"accessToken":"YOUR_ACCESS_TOKEN"}' |
-  dmbridge accounts add instagram --account work --request -
+./scripts/connect-ig.sh
 ```
 
 ### X
 
-X uses OAuth. Start by passing the client configuration registered for your X
-application:
+Create and configure an OAuth 2.0 app using X's
+[developer app guide](https://docs.x.com/fundamentals/developer-apps). Add the
+exact callback URL you plan to use; for local setup, X recommends
+`http://127.0.0.1` rather than `localhost`.
+
+The X setup script asks for the account name, client ID, client type, optional
+client secret, and redirect URI one line at a time. It prints the OAuth link,
+waits for the callback URL, optionally stores the XChat passcode, and finishes
+with a live read-only check:
 
 ```sh
-printf '%s' '{"clientID":"YOUR_CLIENT_ID","clientType":"public","clientSecret":null,"redirectURI":"http://localhost/callback"}' |
-  dmbridge accounts add x --account work --request -
-```
-
-Open the returned `authorizationURL`, approve access, and pass the complete
-callback URL back to the same command:
-
-```sh
-printf '%s' '{"callbackURL":"http://localhost/callback?code=…&state=…"}' |
-  dmbridge accounts add x --account work --request -
-```
-
-To decrypt and send XChat messages, store the account's XChat passcode:
-
-```sh
-printf '%s' 'YOUR_PASSCODE' |
-  dmbridge accounts set-passcode x --account work --secret -
+./scripts/connect-x.sh
 ```
 
 If XChat rejects that passcode, dmbridge immediately forgets it instead of
 risking repeated failed attempts.
 
-Check either account with:
+Both scripts are safe to rerun. If an account already exists, dmbridge asks for
+explicit confirmation before replacing its authorization. Set `DMBRIDGE_BIN` if
+the executable is not named `dmbridge` or is not on your `PATH`:
 
 ```sh
-dmbridge x doctor --account work --live --pretty
-dmbridge instagram doctor --account work --live --pretty
+DMBRIDGE_BIN=/absolute/path/to/dmbridge ./scripts/connect-x.sh
 ```
 
-## A five-minute agent workflow
+## A five-minute personal X workflow
 
-The resource commands are shared across providers. Set `PROVIDER` to `x` or
-`instagram`, then choose the configured account. These examples use `jq` to
-pull opaque IDs out of dmbridge's JSON responses:
+Suppose a friend just sent a meme to your personal X account. These examples use
+`jq` to pull opaque IDs out of dmbridge's JSON responses.
 
-```sh
-PROVIDER=x
-ACCOUNT=work
-```
-
-Find the most recent conversation and open it:
+Open the latest conversation:
 
 ```sh
-CONVERSATION_ID=$(dmbridge "$PROVIDER" conversations list \
+ACCOUNT=personal
+CONVERSATION_ID=$(dmbridge x conversations list \
   --account "$ACCOUNT" --limit 1 |
   jq -r '.result.items[0].conversationID')
 
-dmbridge "$PROVIDER" conversations get "$CONVERSATION_ID" \
+dmbridge x conversations get "$CONVERSATION_ID" \
   --account "$ACCOUNT" --pretty
 ```
 
-Get its latest message and add a reaction. Preview the mutation first:
+Find the newest inbound message with an image and keep both IDs:
 
 ```sh
-MESSAGE_ID=$(dmbridge "$PROVIDER" messages list "$CONVERSATION_ID" \
-  --account "$ACCOUNT" --limit 1 |
-  jq -r '.result.items[0].messageID')
+MESSAGES=$(dmbridge x messages list "$CONVERSATION_ID" \
+  --account "$ACCOUNT" --limit 50)
 
-dmbridge "$PROVIDER" reactions add "$MESSAGE_ID" \
-  --account "$ACCOUNT" --reaction '👍' --dry-run --pretty
+MEME=$(printf '%s' "$MESSAGES" | jq -c '
+  [.result.items[]
+    | select(.direction == "inbound")
+    | . as $message
+    | .attachments[]
+    | select(.type == "image")
+    | {messageID: $message.messageID, attachmentID: .attachmentID}][0]')
 
-dmbridge "$PROVIDER" reactions add "$MESSAGE_ID" \
-  --account "$ACCOUNT" --reaction '👍'
+MESSAGE_ID=$(printf '%s' "$MEME" | jq -r '.messageID')
+ATTACHMENT_ID=$(printf '%s' "$MEME" | jq -r '.attachmentID')
 ```
 
-Send a message of your own, again starting with a dry run:
+Heart the meme. Preview the mutation, then do it:
 
 ```sh
-printf '%s' '{"type":"text","text":"Thanks — we are on it!"}' |
-  dmbridge "$PROVIDER" messages send "$CONVERSATION_ID" \
+dmbridge x reactions add "$MESSAGE_ID" \
+  --account "$ACCOUNT" --reaction '❤️' --dry-run --pretty
+
+dmbridge x reactions add "$MESSAGE_ID" \
+  --account "$ACCOUNT" --reaction '❤️'
+```
+
+Reply with `sick meme`:
+
+```sh
+printf '%s' '{"type":"text","text":"sick meme"}' |
+  dmbridge x messages reply "$MESSAGE_ID" \
     --account "$ACCOUNT" --request - --dry-run --pretty
 
-printf '%s' '{"type":"text","text":"Thanks — we are on it!"}' |
-  dmbridge "$PROVIDER" messages send "$CONVERSATION_ID" \
+printf '%s' '{"type":"text","text":"sick meme"}' |
+  dmbridge x messages reply "$MESSAGE_ID" \
     --account "$ACCOUNT" --request -
 ```
 
-Find an image in the recent history and download it to an explicit destination:
+Download the meme to your Downloads folder:
 
 ```sh
-ATTACHMENT_ID=$(dmbridge "$PROVIDER" messages list "$CONVERSATION_ID" \
-  --account "$ACCOUNT" --limit 50 |
-  jq -r '[.result.items[].attachments[] | select(.type == "image")][0].attachmentID')
-
-dmbridge "$PROVIDER" attachments download "$ATTACHMENT_ID" \
+dmbridge x attachments download "$ATTACHMENT_ID" \
   --account "$ACCOUNT" \
-  --destination-url file:///absolute/path/to/inbox-image.jpg
+  --destination-url "file://$HOME/Downloads/meme.jpg"
 ```
 
 IDs are opaque strings. Keep the exact values dmbridge returns rather than
