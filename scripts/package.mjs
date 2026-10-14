@@ -35,8 +35,15 @@ async function checksum(path) {
   process.stdout.write(line);
 }
 
+function runNpm(arguments_, options = {}) {
+  return run(npm, arguments_, {
+    ...options,
+    shell: process.platform === "win32",
+  });
+}
+
 async function packageNpm() {
-  const result = await run(npm, ["pack", "--json"], {
+  const result = await runNpm(["pack", "--json"], {
     cwd: workspace,
     maxBuffer: 20 * 1024 * 1024,
   });
@@ -64,7 +71,7 @@ async function packageExecutable() {
   const temporaryExecutable = join(temporaryDirectory, executableName);
 
   try {
-    await run(npm, ["run", "build"], { cwd: workspace });
+    await runNpm(["run", "build"], { cwd: workspace });
     await run(
       "deno",
       [
