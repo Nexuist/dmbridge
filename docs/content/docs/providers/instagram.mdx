@@ -13,6 +13,22 @@ and follow Meta's
 [Instagram API setup](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/get-started/)
 to obtain an access token.
 
+## What you need
+
+| Value | Required? | What to enter |
+| --- | --- | --- |
+| Account name | Yes | A local dmbridge label for this login. The setup script defaults to `personal`. |
+| Access token (`accessToken`) | Yes | An Instagram user access token issued for the professional account by your Meta app. |
+| Account ID (`accountID`) | No | An optional known Instagram account ID. dmbridge discovers it from `/me` when omitted. |
+| Account username (`accountUsername`) | No | An optional known Instagram username. dmbridge discovers it from `/me` when omitted. |
+| Graph API version (`apiVersion`) | No | An optional version such as `v24.0`. Omit it to use the unversioned `graph.instagram.com` endpoint. |
+
+dmbridge does not ask for your Meta app ID, app secret, or OAuth redirect URI.
+Those may be part of issuing the access token in Meta's developer tools, but
+dmbridge only needs the resulting token. The guided script asks only for the
+account name and access token; the other optional fields are available through
+the structured `accounts add instagram` request.
+
 From a dmbridge repository checkout:
 
 ```sh

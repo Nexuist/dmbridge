@@ -8,16 +8,36 @@ Create and configure an OAuth 2.0 app using X's
 exact callback URL you plan to use. For local setup, X recommends
 `http://127.0.0.1` rather than `localhost`.
 
+## What you need
+
+| Value | Required? | What to enter |
+| --- | --- | --- |
+| Account name | Yes | A local dmbridge label for this login. The setup script defaults to `personal`. |
+| OAuth client ID (`clientID`) | Yes | The client ID from your X app's OAuth 2.0 settings. |
+| Client type (`clientType`) | Yes | `public` for a native/local app using PKCE, or `confidential` for a client that can safely hold a secret. The script defaults to `public`. |
+| OAuth client secret (`clientSecret`) | Confidential clients only | The client secret from your X app. Public clients must leave this empty. |
+| Redirect URI (`redirectURI`) | Yes | An absolute callback URL registered exactly the same way in your X app. The script defaults to `http://127.0.0.1/callback`. |
+| OAuth callback URL (`callbackURL`) | Yes, after approval | The complete URL X redirects you to. Paste it back into the setup script; dmbridge extracts the authorization code and state. |
+| XChat passcode | Only for passcode-protected XChat access | Your XChat passcode. It is entered as a secret after OAuth and is never passed as a command-line argument. |
+
+dmbridge requests `dm.read`, `dm.write`, `tweet.read`, `users.read`,
+`media.write`, and `offline.access` automatically. You do not need to create or
+paste access tokens, refresh tokens, PKCE values, an authorization code, or an
+OAuth state value yourself.
+
+`realmTokenIssuerURL` is an optional advanced override for a custom XChat realm
+token issuer. The guided setup does not ask for it, and normal X accounts do
+not need it.
+
 From a dmbridge repository checkout:
 
 ```sh
 ./scripts/connect-x.sh
 ```
 
-The script asks for the account name, client ID, client type, optional client
-secret, and redirect URI one line at a time. It prints the OAuth link, waits for
-the callback URL, optionally stores the XChat passcode, and finishes with a live
-read-only check.
+The script asks for the values above one line at a time. It prints the OAuth
+link, waits for the callback URL, optionally stores the XChat passcode, and
+finishes with a live read-only check.
 
 If XChat rejects the passcode, dmbridge immediately forgets it rather than
 risking repeated failed attempts.
