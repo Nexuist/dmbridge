@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.1.2-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.1.3-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -418,7 +418,7 @@ a real account.
 For unattended calls, a useful baseline is:
 
 ```text
---json --no-input --no-color --timeout 30s
+--json --no-input --timeout 30s
 ```
 
 ## Development and tests

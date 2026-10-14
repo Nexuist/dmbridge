@@ -123,7 +123,7 @@ async function packageExecutable() {
     const accounts = JSON.parse(
       (await run(
         temporaryExecutable,
-        ["accounts", "list", "--json", "--no-input", "--no-color"],
+        ["accounts", "list", "--json", "--no-input"],
         { env: environment },
       )).stdout,
     );

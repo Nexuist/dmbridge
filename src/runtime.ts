@@ -7,14 +7,12 @@ export type Verbosity = "quiet" | "normal" | "verbose" | "debug";
 type RuntimeOptions = {
   timeoutMs: number | null;
   verbosity: Verbosity;
-  color: boolean;
   nonInteractive: boolean;
 };
 
 const runtime: RuntimeOptions = {
   timeoutMs: null,
   verbosity: "normal",
-  color: false,
   nonInteractive: false,
 };
 

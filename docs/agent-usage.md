@@ -8,9 +8,9 @@ CLI. Repository contributors should also follow the root `AGENTS.md`.
 Start by checking the installed contract and local account names:
 
 ```sh
-dmbridge version --json --no-input --no-color
-dmbridge accounts list --json --no-input --no-color
-dmbridge x doctor --account personal --json --no-input --no-color
+dmbridge version --json --no-input
+dmbridge accounts list --json --no-input
+dmbridge x doctor --account personal --json --no-input
 ```
 
 Use `doctor --schema <name>` to discover request and result contracts instead
@@ -20,7 +20,7 @@ when the user has authorized access to the configured provider account.
 For unattended calls, normally include:
 
 ```text
---json --no-input --no-color --timeout 30s
+--json --no-input --timeout 30s
 ```
 
 Use `--quiet` when stderr diagnostics are not wanted. Do not combine `--quiet`
@@ -58,7 +58,7 @@ Example read:
 
 ```sh
 dmbridge x conversations list \
-  --account personal --limit 50 --json --no-input --no-color --timeout 30s
+  --account personal --limit 50 --json --no-input --timeout 30s
 ```
 
 Example body through stdin:
@@ -66,7 +66,7 @@ Example body through stdin:
 ```sh
 printf '%s' '{"type":"text","text":"hello"}' |
   dmbridge x messages send CONVERSATION_ID --account personal --request - \
-    --dry-run --json --no-input --no-color --timeout 30s
+    --dry-run --json --no-input --timeout 30s
 ```
 
 ## Mutations and confirmation
@@ -90,10 +90,10 @@ dry runs, and offline fixtures.
 Use the CLI itself as the current command inventory:
 
 ```sh
-dmbridge help --json --no-input --no-color
-dmbridge x messages --help --json --no-input --no-color
-dmbridge x doctor --schema message.send --json --no-input --no-color
-dmbridge x doctor --schema accounts.add.request --json --no-input --no-color
+dmbridge help --json --no-input
+dmbridge x messages --help --json --no-input
+dmbridge x doctor --schema message.send --json --no-input
+dmbridge x doctor --schema accounts.add.request --json --no-input
 ```
 
 Do not scrape README examples as a command registry. Help and doctor output are

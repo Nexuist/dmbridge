@@ -79,7 +79,7 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
     const envelope = JSON.parse((await runCLI(args)).stdout) as {
       result: { version: string; protocolVersion: number; schemaVersion: number };
     };
-    assert.equal(envelope.result.version, "2.1.2");
+    assert.equal(envelope.result.version, "2.1.3");
     assert.equal(envelope.result.protocolVersion, 1);
     assert.equal(envelope.result.schemaVersion, 5);
   }
@@ -102,6 +102,7 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
   for (const args of [
     ["accounts", "list", "--ndjson"],
     ["help", "--output", "ndjson"],
+    ["help", "--no-color"],
   ]) {
     await assert.rejects(runCLI(args), (error: unknown) => {
       const failure = error as { code?: number; stdout?: string };
@@ -115,7 +116,7 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
     });
   }
 
-  const verbose = await runCLI(["help", "--verbose", "--no-color"]);
+  const verbose = await runCLI(["help", "--verbose"]);
   assert.match(verbose.stderr, /executing help/);
   assert.match(verbose.stderr, /completed help/);
   const quiet = await runCLI(["help", "--quiet", "--no-input"]);

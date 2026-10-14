@@ -107,7 +107,6 @@ export const configureCommandRuntime = (command: ParsedCommand) => {
   configureRuntime({
     timeoutMs: timeout === null ? null : parseDurationMs(timeout),
     verbosity: verbosity as Verbosity,
-    color: optionValue(command, "color") !== false,
     nonInteractive:
       optionValue(command, "input") === false ||
       hasOption(command, "non-interactive"),
@@ -655,7 +654,6 @@ export const getCLIHelp = (prefix: string[] = []) => {
     "--pretty",
     "--timeout <duration-with-unit>",
     "--no-input, --non-interactive",
-    "--no-color",
     "--quiet",
     "-v, --verbose",
     "--verbosity <quiet|normal|verbose|debug>",
@@ -704,7 +702,6 @@ const earlyOptions = (argv: string[]): Values => {
     else if (flag === "-v" || flag === "--verbose") values.verbose = true;
     else if (flag === "--no-input") values.input = false;
     else if (flag === "--non-interactive") values.nonInteractive = true;
-    else if (flag === "--no-color") values.color = false;
   }
   return values;
 };
@@ -743,7 +740,6 @@ export const parseCommand = (argv: string[]): ParsedCommand => {
     .option("--quiet")
     .option("-v, --verbose")
     .option("--verbosity <level>")
-    .option("--no-color")
     .option("--no-input")
     .option("--non-interactive")
     .option("-h, --help")
