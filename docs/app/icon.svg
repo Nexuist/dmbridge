@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="gold" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F1CB6A"/>
+      <stop offset="1" stop-color="#CDA34E"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#090F0C"/>
+  <path d="M13 14h38a5 5 0 0 1 5 5v21a5 5 0 0 1-5 5H29L17 52l2.5-7H13a5 5 0 0 1-5-5V19a5 5 0 0 1 5-5Z" fill="url(#gold)"/>
+  <circle cx="26" cy="29.5" r="10" fill="#121217"/>
+  <circle cx="41" cy="29.5" r="10" fill="none" stroke="#121217" stroke-width="2.5"/>
+  <text x="21.5" y="34" fill="url(#gold)" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="800">2</text>
+  <text x="36.7" y="34" fill="#121217" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="800">¢</text>
+</svg>

@@ -3,12 +3,90 @@
 @import "fumadocs-ui/css/preset.css";
 
 :root {
-  --dmbridge-cyan: #22d3ee;
-  --dmbridge-violet: #8b5cf6;
+  --tc-green: #338a51;
+  --tc-green-bright: #43fe95;
+  --tc-green-secondary: #2f6a54;
+  --tc-blue: #507ce2;
+  --tc-gold: #d6b06b;
+  --tc-background: #f0f7f2;
+  --tc-surface: #ffffff;
+  --tc-foreground: #090f0c;
+  --tc-muted: #4f7260;
+  --tc-border: #a8c8b2;
+  --color-fd-background: var(--tc-background);
+  --color-fd-foreground: var(--tc-foreground);
+  --color-fd-muted: #d4e8da;
+  --color-fd-muted-foreground: #3a5445;
+  --color-fd-popover: #ffffff;
+  --color-fd-popover-foreground: #090f0c;
+  --color-fd-card: #ffffff;
+  --color-fd-card-foreground: #090f0c;
+  --color-fd-border: #a8c8b2;
+  --color-fd-primary: var(--tc-green);
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-secondary: #d4e8da;
+  --color-fd-secondary-foreground: #2f6a54;
+  --color-fd-accent: #a8c8b2;
+  --color-fd-accent-foreground: #090f0c;
+  --color-fd-ring: var(--tc-green);
+  --color-fd-overlay: rgb(17 24 39 / 24%);
+  color-scheme: light;
+}
+
+.dark {
+  --tc-green: #43fe95;
+  --tc-green-bright: #43fe95;
+  --tc-green-secondary: #3faf8a;
+  --tc-blue: #5aa8ff;
+  --tc-gold: #d6b06b;
+  --tc-background: #090f0c;
+  --tc-surface: #111813;
+  --tc-foreground: #f0f7f2;
+  --tc-muted: #a8c8b2;
+  --tc-border: #2a2d34;
+  --color-fd-background: var(--tc-background);
+  --color-fd-foreground: var(--tc-foreground);
+  --color-fd-muted: #181f1b;
+  --color-fd-muted-foreground: #a8c8b2;
+  --color-fd-popover: #111813;
+  --color-fd-popover-foreground: #f0f7f2;
+  --color-fd-card: #181f1b;
+  --color-fd-card-foreground: #f0f7f2;
+  --color-fd-border: #2a2d34;
+  --color-fd-primary: var(--tc-green);
+  --color-fd-primary-foreground: #090f0c;
+  --color-fd-secondary: #181f1b;
+  --color-fd-secondary-foreground: #f0f7f2;
+  --color-fd-accent: #2f6a54;
+  --color-fd-accent-foreground: #f0f7f2;
+  --color-fd-ring: var(--tc-green);
+  --color-fd-overlay: rgb(0 0 0 / 56%);
+  color-scheme: dark;
 }
 
 html {
   scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--color-fd-background);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+code,
+kbd,
+pre,
+.font-mono {
+  font-family: "SFMono-Regular", "Sometype Mono", Menlo, Monaco, Consolas,
+    monospace;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--tc-green) 28%, transparent);
+  color: var(--color-fd-foreground);
 }
 
 html > body[data-scroll-locked] {
@@ -18,7 +96,146 @@ html > body[data-scroll-locked] {
 
 .dmbridge-grid {
   background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--dmbridge-cyan) 8%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--dmbridge-violet) 8%, transparent) 1px, transparent 1px);
-  background-size: 32px 32px;
+    radial-gradient(circle at 76% 20%, color-mix(in srgb, var(--tc-green) 16%, transparent), transparent 28rem),
+    linear-gradient(to right, color-mix(in srgb, var(--tc-green) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--tc-green-secondary) 7%, transparent) 1px, transparent 1px);
+  background-size: auto, 36px 36px, 36px 36px;
+}
+
+.tc-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: -0.025em;
+}
+
+.tc-brand-mark {
+  display: inline-flex;
+  width: 1.8rem;
+  color: var(--tc-gold);
+}
+
+.tc-wordmark-company {
+  color: var(--tc-green);
+  font-weight: 750;
+}
+
+.tc-wordmark-divider {
+  color: color-mix(in srgb, var(--color-fd-muted-foreground) 55%, transparent);
+  font-weight: 400;
+}
+
+.tc-wordmark-product {
+  color: var(--color-fd-foreground);
+  font-weight: 650;
+}
+
+.tc-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  border: 1px solid color-mix(in srgb, var(--tc-green) 24%, transparent);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--tc-green) 8%, var(--color-fd-background));
+  padding: 0.45rem 0.8rem;
+  color: var(--tc-green);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tc-kicker::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: var(--tc-green);
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--tc-green) 70%, transparent);
+  content: "";
+}
+
+.tc-hero-title {
+  font-variation-settings: "wdth" 103;
+  letter-spacing: -0.055em;
+}
+
+.tc-hero-title span {
+  color: var(--tc-green);
+}
+
+.tc-primary-button {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tc-green) 36%, transparent),
+    0 16px 40px -18px color-mix(in srgb, var(--tc-green) 70%, transparent);
+}
+
+.tc-download-button {
+  border-color: color-mix(in srgb, var(--tc-blue) 42%, var(--color-fd-border));
+}
+
+.tc-download-button:hover {
+  border-color: var(--tc-blue);
+  color: var(--tc-blue);
+}
+
+.tc-secondary-button,
+.tc-feature-card,
+.tc-terminal {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #ffffff 4%, transparent), transparent),
+    var(--color-fd-card);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 8%, transparent),
+    0 18px 48px -32px color-mix(in srgb, #000000 55%, transparent);
+}
+
+.tc-feature-card {
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.tc-feature-card:hover {
+  border-color: color-mix(in srgb, var(--tc-green) 42%, var(--color-fd-border));
+  box-shadow: 0 22px 56px -34px color-mix(in srgb, var(--tc-green) 52%, transparent);
+  transform: translateY(-2px);
+}
+
+.tc-terminal {
+  border: 1px solid color-mix(in srgb, var(--tc-green) 20%, var(--color-fd-border));
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.tc-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-bottom: 1px solid var(--color-fd-border);
+  padding: 0.85rem 1rem;
+}
+
+.tc-terminal-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--tc-green) 35%, var(--color-fd-border));
+}
+
+.tc-terminal-dot:first-child {
+  background: var(--tc-green);
+}
+
+#nd-nav nav {
+  border-color: color-mix(in srgb, var(--tc-green) 10%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-background) 84%, transparent);
+}
+
+#nd-sidebar {
+  --color-fd-muted: color-mix(in srgb, var(--tc-green) 5%, var(--color-fd-background));
+  --color-fd-secondary: color-mix(in srgb, var(--tc-green) 7%, var(--color-fd-background));
+  --color-fd-muted-foreground: var(--tc-muted);
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  text-decoration-color: color-mix(in srgb, var(--tc-green) 45%, transparent);
+  text-underline-offset: 0.2em;
 }
