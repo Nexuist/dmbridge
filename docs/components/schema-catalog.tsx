@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
 
 type JSONSchema = {
   $ref?: string;
@@ -54,71 +55,71 @@ export function SchemaCatalog({ names }: { names?: string[] }) {
         This page is rendered directly from <code>test/snapshots/schemas.json</code>.
       </div>
 
-      {selected.map((name) => {
-        const schema = snapshot.schemas[name];
-        if (!schema) {
-          throw new Error(`Unknown documented schema: ${name}`);
-        }
-        const required = new Set(schema.required ?? []);
-        const properties = Object.entries(schema.properties ?? {});
+      <Accordions multiple>
+        {selected.map((name) => {
+          const schema = snapshot.schemas[name];
+          if (!schema) {
+            throw new Error(`Unknown documented schema: ${name}`);
+          }
+          const required = new Set(schema.required ?? []);
+          const properties = Object.entries(schema.properties ?? {});
 
-        return (
-          <section
-            key={name}
-            id={schemaAnchor(name)}
-            className="scroll-m-24 overflow-hidden rounded-2xl border bg-fd-card"
-          >
-            <div className="border-b px-5 py-4">
-              <h2 className="font-mono text-lg font-bold">{name}</h2>
+          return (
+            <Accordion
+              key={name}
+              id={schemaAnchor(name)}
+              title={<span className="font-mono">{name}</span>}
+              value={name}
+            >
               {schema.description ? (
-                <p className="mt-2 text-sm leading-6 text-fd-muted-foreground">
+                <p className="pb-4 text-sm leading-6 text-fd-muted-foreground">
                   {schema.description}
                 </p>
               ) : null}
-            </div>
 
-            {properties.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead className="bg-fd-muted/45 text-xs tracking-wide text-fd-muted-foreground uppercase">
-                    <tr>
-                      <th className="px-5 py-3 font-semibold">Property</th>
-                      <th className="px-5 py-3 font-semibold">Type</th>
-                      <th className="px-5 py-3 font-semibold">Required</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {properties.map(([property, definition]) => (
-                      <tr key={property}>
-                        <td className="px-5 py-3 align-top font-mono font-medium">{property}</td>
-                        <td className="px-5 py-3 align-top font-mono text-xs text-fd-muted-foreground">
-                          {describeType(definition)}
-                        </td>
-                        <td className="px-5 py-3 align-top">
-                          {required.has(property) ? "yes" : "no"}
-                        </td>
+              {properties.length > 0 ? (
+                <div className="overflow-x-auto border-y">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-fd-muted/45 text-xs tracking-wide text-fd-muted-foreground uppercase">
+                      <tr>
+                        <th className="py-3 pr-5 font-semibold">Property</th>
+                        <th className="px-5 py-3 font-semibold">Type</th>
+                        <th className="py-3 pl-5 font-semibold">Required</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <p className="px-5 py-4 font-mono text-sm text-fd-muted-foreground">
-                {describeType(schema)}
-              </p>
-            )}
+                    </thead>
+                    <tbody className="divide-y">
+                      {properties.map(([property, definition]) => (
+                        <tr key={property}>
+                          <td className="py-3 pr-5 align-top font-mono font-medium">{property}</td>
+                          <td className="px-5 py-3 align-top font-mono text-xs text-fd-muted-foreground">
+                            {describeType(definition)}
+                          </td>
+                          <td className="py-3 pl-5 align-top">
+                            {required.has(property) ? "yes" : "no"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="border-y py-4 font-mono text-sm text-fd-muted-foreground">
+                  {describeType(schema)}
+                </p>
+              )}
 
-            <details className="border-t">
-              <summary className="cursor-pointer px-5 py-3 text-sm font-semibold">
-                JSON Schema
-              </summary>
-              <pre className="max-h-[36rem] overflow-auto border-t bg-fd-secondary/45 p-5 text-xs leading-5">
-                {JSON.stringify(schema, null, 2)}
-              </pre>
-            </details>
-          </section>
-        );
-      })}
+              <details>
+                <summary className="cursor-pointer py-3 text-sm font-semibold">
+                  JSON Schema
+                </summary>
+                <pre className="max-h-[36rem] overflow-auto border-t bg-fd-secondary/45 p-5 text-xs leading-5">
+                  {JSON.stringify(schema, null, 2)}
+                </pre>
+              </details>
+            </Accordion>
+          );
+        })}
+      </Accordions>
     </div>
   );
 }

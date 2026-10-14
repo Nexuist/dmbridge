@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.3.5-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.3.6-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![docs](https://github.com/Nexuist/dmbridge/actions/workflows/docs.yml/badge.svg)](https://nexuist.github.io/dmbridge/)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
