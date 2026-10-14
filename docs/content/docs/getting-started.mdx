@@ -34,6 +34,9 @@ default. Set `DMBRIDGE_HOME` or pass `--home /absolute/path` to use another
 location. The directory is private to the current user and credential files are
 written with mode `0600`.
 
+Pass secrets through files or stdin so they do not appear in shell history or
+process arguments. The connection scripts below do this for you.
+
 From a repository checkout, the connection scripts ask for credentials one
 line at a time and avoid putting secrets in shell history:
 

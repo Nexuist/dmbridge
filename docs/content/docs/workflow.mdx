@@ -7,27 +7,161 @@ Suppose a friend sent a meme to your personal X account.
 
 ## Find the conversation
 
+Open the latest conversation:
+
 ```sh
 dmbridge x conversations list --account personal --limit 1 --pretty
 ```
 
-Use the returned conversation ID to list its messages:
+```json
+{
+  "account": "personal",
+  "command": "x conversations list",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-1",
+  "result": {
+    "items": [
+      {
+        "archived": false,
+        "conversationID": "x-conversation-123",
+        "lastReadMessageID": "x-message-455",
+        "latestMessageAt": "2026-10-14T19:42:11.000Z",
+        "latestMessageID": "x-message-456",
+        "muted": false,
+        "participants": [
+          {
+            "displayName": "Jamie",
+            "userID": "x-user-42",
+            "username": "jamie"
+          }
+        ],
+        "protocol": "xchat",
+        "title": "Jamie",
+        "type": "direct",
+        "unread": true,
+        "unreadCount": 1
+      }
+    ],
+    "nextCursor": null
+  }
+}
+```
+
+Open it:
+
+```sh
+dmbridge x conversations get x-conversation-123 \
+  --account personal --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x conversations get x-conversation-123",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-2",
+  "result": {
+    "archived": false,
+    "conversationID": "x-conversation-123",
+    "lastReadMessageID": "x-message-455",
+    "latestMessageAt": "2026-10-14T19:42:11.000Z",
+    "latestMessageID": "x-message-456",
+    "muted": false,
+    "participants": [
+      {
+        "displayName": "Jamie",
+        "userID": "x-user-42",
+        "username": "jamie"
+      }
+    ],
+    "protocol": "xchat",
+    "title": "Jamie",
+    "type": "direct",
+    "unread": true,
+    "unreadCount": 1
+  }
+}
+```
+
+List its messages:
 
 ```sh
 dmbridge x messages list x-conversation-123 \
   --account personal --limit 50 --pretty
 ```
 
-The newest inbound message contains `messageID: "x-message-456"` and an image
-attachment with `attachmentID: "x-attachment-789"`.
+```json
+{
+  "account": "personal",
+  "command": "x messages list x-conversation-123",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-3",
+  "result": {
+    "items": [
+      {
+        "attachments": [
+          {
+            "attachmentID": "x-attachment-789",
+            "filename": "meme.jpg",
+            "mediaType": "image/jpeg",
+            "sourceURL": null,
+            "type": "image"
+          }
+        ],
+        "conversationID": "x-conversation-123",
+        "direction": "inbound",
+        "messageID": "x-message-456",
+        "providerType": "message",
+        "read": false,
+        "reactions": [],
+        "replyToMessageID": null,
+        "senderID": "x-user-42",
+        "senderUsername": "jamie",
+        "sentAt": "2026-10-14T19:42:11.000Z",
+        "text": null,
+        "type": "image"
+      }
+    ],
+    "nextCursor": null
+  }
+}
+```
+
+The newest inbound message has `messageID: "x-message-456"` and an image with
+`attachmentID: "x-attachment-789"`.
 
 ## Heart the meme
 
-Preview the mutation first:
+Preview the mutation:
 
 ```sh
 dmbridge x reactions add x-message-456 \
   --account personal --reaction '❤️' --dry-run --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x reactions add x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-4",
+  "result": {
+    "account": "personal",
+    "dryRun": true,
+    "operation": "add",
+    "provider": "x",
+    "request": { "reaction": "❤️" },
+    "target": "x-message-456"
+  }
+}
 ```
 
 Then run the same action without `--dry-run`:
@@ -37,13 +171,47 @@ dmbridge x reactions add x-message-456 \
   --account personal --reaction '❤️' --pretty
 ```
 
+```json
+{
+  "account": "personal",
+  "command": "x reactions add x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-5",
+  "result": {
+    "confirmed": true,
+    "effect": "exact"
+  }
+}
+```
+
 ## Reply
 
-Text replies do not need a JSON request body:
+Text replies do not need a JSON request body. Preview this one first:
 
 ```sh
 dmbridge x messages reply x-message-456 "sick meme" \
   --account personal --dry-run --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x messages reply x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-6",
+  "result": {
+    "account": "personal",
+    "dryRun": true,
+    "operation": "reply",
+    "provider": "x",
+    "request": { "text": "sick meme", "type": "text" },
+    "target": "x-message-456"
+  }
+}
 ```
 
 After inspecting the dry run:
@@ -53,12 +221,44 @@ dmbridge x messages reply x-message-456 "sick meme" \
   --account personal --pretty
 ```
 
+```json
+{
+  "account": "personal",
+  "command": "x messages reply x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-7",
+  "result": {
+    "confirmed": true,
+    "effect": "exact"
+  }
+}
+```
+
 ## Download the image
 
 ```sh
 dmbridge x attachments download x-attachment-789 \
   --account personal \
   --destination-url "file://$HOME/Downloads/meme.jpg" --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x attachments download x-attachment-789",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-8",
+  "result": {
+    "bytes": 184320,
+    "destinationURL": "file:///Users/you/Downloads/meme.jpg",
+    "mediaType": "image/jpeg",
+    "sha256": "d8e8fca2dc0f896fd7cb4cb0031ba2493a8bdf6d2230c53a8f18b3f4c2e3d7a1"
+  }
+}
 ```
 
 The result includes the destination URL, media type, byte count, and SHA-256

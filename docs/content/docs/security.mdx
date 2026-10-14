@@ -1,0 +1,39 @@
+---
+title: Local and security
+description: How dmbridge runs, stores credentials, and keeps mutations controlled.
+---
+
+## No middleman service
+
+dmbridge runs entirely on your machine and connects directly to X and
+Instagram. It does not depend on a dmbridge-hosted API, proxy, account, or
+subscription. The source is available under the MIT license.
+
+The social platforms still receive the requests needed to read or change their
+data. “Local” describes dmbridge itself; it does not make X or Instagram
+offline services.
+
+## Credentials stay local
+
+Account configuration and credentials live under `~/.dmbridge` by default.
+Set `DMBRIDGE_HOME` or pass `--home /absolute/path` to use another location.
+The home directory is private to the current user, and credential files are
+written with mode `0600`.
+
+Secrets are accepted through protected files or stdin so access tokens, client
+secrets, OAuth callback values, and XChat passcodes do not need to appear in
+shell history or process arguments.
+
+If XChat rejects a stored passcode, dmbridge forgets it immediately instead of
+risking repeated failed attempts.
+
+## Mutations stay explicit
+
+Every mutation supports `--dry-run`. Destructive operations require explicit
+confirmation, and `--no-input` never counts as authorization. Errors report
+whether an automatic retry is safe; an unsafe failure can mean the platform
+accepted a mutation before the response was lost.
+
+Read the [automation behavior](./reference/automation.mdx) for the complete
+stdout, stderr, confirmation, timeout, and retry contract. Automated callers
+should also follow the [agent guide](./agents.mdx).

@@ -1,0 +1,43 @@
+---
+title: Development and tests
+description: Install dependencies, run the offline and live suites, and build an executable.
+---
+
+The source is TypeScript and requires Node.js 22.12 or newer.
+
+## Local checks
+
+```sh
+npm install
+npm run check
+npm test
+npm run test:package
+```
+
+The offline suite covers authentication, schemas, pagination, provider
+fixtures, encryption paths, mutations, attachments, and failure behavior. The
+package test installs the generated tarball in isolation and exercises its
+`dmbridge` executable.
+
+## Live read-only checks
+
+With explicit approval and noncritical X and Instagram accounts configured in
+the dmbridge home, run:
+
+```sh
+npm run test:live
+```
+
+The live suite reads account, conversation, and message data. It does not call
+mutation endpoints or open message-request inboxes that may have delivery side
+effects.
+
+## Build an executable
+
+```sh
+npm run package:executable
+```
+
+Deno is used only as the release compiler. The source, tests, and npm package
+remain Node-based. See the [release checklist](./release.mdx) for the complete
+packaging and publishing gate.

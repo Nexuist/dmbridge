@@ -1,15 +1,17 @@
 ---
 title: dmbridge
-description: One command-line interface for direct messages across social platforms.
+description: A local, free, and open-source command-line interface for direct messages.
 ---
 
-dmbridge gives scripts and AI agents a predictable JSON interface for direct
-messages. It supports XChat and Instagram Messaging today, with more platforms
-to come.
+dmbridge gives scripts and AI agents one predictable JSON interface for direct
+messages across XChat and Instagram Messaging. It is free and open source, runs
+entirely on your machine, and talks directly to each platform. There is no
+dmbridge-hosted middleman service or subscription.
 
 <Cards>
   <Card title="Get started" description="Install dmbridge and connect your first account." href="/docs/getting-started" />
   <Card title="Try the X workflow" description="Open a DM, heart a meme, reply, and download it." href="/docs/workflow" />
+  <Card title="Local by design" description="Understand where dmbridge runs and how it stores credentials." href="/docs/security" />
   <Card title="Browse the objects" description="See every field in messages, conversations, attachments, and more." href="/docs/reference/objects" />
   <Card title="Read the schemas" description="Explore the complete versioned JSON contract." href="/docs/reference/schemas" />
 </Cards>
@@ -20,10 +22,34 @@ to come.
 one practical way for our agents to handle incoming messages without teaching
 each agent a different API, authentication flow, and response format.
 
-dmbridge was built with Codex and GPT-5.6 against those real workflows. The
-offline test suite covers authentication, schemas, pagination, provider
-fixtures, encryption paths, mutations, attachments, and failure behavior. An
-optional live, read-only suite can verify configured X and Instagram accounts.
+So we built dmbridge.
+
+## How it was built
+
+dmbridge was vibe coded with Codex and GPT-5.6 against those real workflows.
+The speed came from the model; confidence comes from tests that pin down the
+behavior. The offline test suite covers authentication, schemas, pagination,
+provider fixtures, encryption paths, mutations, attachments, and failure
+behavior. An optional live, read-only suite can verify configured X and
+Instagram accounts.
+
+You should still review what your agent intends to do. Every mutation supports
+`--dry-run`, destructive actions require confirmation, and failures report
+whether an automatic retry would be safe.
+
+## What works
+
+- XChat and Instagram Messaging
+- Multiple named accounts per platform
+- Direct and group conversations where the provider supports them
+- Conversation and message-request inboxes
+- Read, send, reply, edit, delete, and read-state operations where supported
+- Reactions and attachment downloads
+- JSON output with stable, versioned schemas
+- Non-interactive operation for agents and scripts
+
+Provider APIs can change underneath dmbridge. Use `doctor --live` when you want
+to verify a configured account against the real provider.
 
 ## The contract
 

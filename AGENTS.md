@@ -100,6 +100,9 @@ for the full release gate.
 ## Documentation site
 
 `docs/` is a self-contained Fumadocs static site deployed to GitHub Pages.
+Treat it as the canonical home for human documentation. Keep `README.md` as a
+short GitHub and npm landing page that links into Fumadocs; do not duplicate
+setup guides, workflows, reference material, or contributor instructions there.
 Keep its dependencies and lockfile isolated from the root CLI package. The
 schema and command reference components read the reviewed files in
 `test/snapshots/` at build time; do not copy those contracts into handwritten
