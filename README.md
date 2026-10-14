@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.1.1-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.1.2-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -134,25 +134,130 @@ DMBRIDGE_BIN=/absolute/path/to/dmbridge ./scripts/connect-x.sh
 
 ## A five-minute personal X workflow
 
-Suppose a friend just sent a meme to your personal X account. These examples use
-made-up IDs so every step is a plain terminal command. Replace them with the
-IDs returned by the preceding command.
+Suppose a friend just sent a meme to your personal X account.
 
 Open the latest conversation:
 
 ```sh
 dmbridge x conversations list --account personal --limit 1 --pretty
+```
 
+```json
+{
+  "account": "personal",
+  "command": "x conversations list",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-1",
+  "result": {
+    "items": [
+      {
+        "archived": false,
+        "conversationID": "x-conversation-123",
+        "lastReadMessageID": "x-message-455",
+        "latestMessageAt": "2026-10-14T19:42:11.000Z",
+        "latestMessageID": "x-message-456",
+        "muted": false,
+        "participants": [
+          {
+            "displayName": "Jamie",
+            "userID": "x-user-42",
+            "username": "jamie"
+          }
+        ],
+        "protocol": "xchat",
+        "title": "Jamie",
+        "type": "direct",
+        "unread": true,
+        "unreadCount": 1
+      }
+    ],
+    "nextCursor": null
+  }
+}
+```
+
+```sh
 dmbridge x conversations get x-conversation-123 \
   --account personal --pretty
 ```
 
-Find the newest inbound message with an image. Its result includes the message
-ID and attachment ID used below:
+```json
+{
+  "account": "personal",
+  "command": "x conversations get x-conversation-123",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-2",
+  "result": {
+    "archived": false,
+    "conversationID": "x-conversation-123",
+    "lastReadMessageID": "x-message-455",
+    "latestMessageAt": "2026-10-14T19:42:11.000Z",
+    "latestMessageID": "x-message-456",
+    "muted": false,
+    "participants": [
+      {
+        "displayName": "Jamie",
+        "userID": "x-user-42",
+        "username": "jamie"
+      }
+    ],
+    "protocol": "xchat",
+    "title": "Jamie",
+    "type": "direct",
+    "unread": true,
+    "unreadCount": 1
+  }
+}
+```
+
+Find the newest inbound message with an image:
 
 ```sh
 dmbridge x messages list x-conversation-123 \
   --account personal --limit 50 --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x messages list x-conversation-123",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-3",
+  "result": {
+    "items": [
+      {
+        "attachments": [
+          {
+            "attachmentID": "x-attachment-789",
+            "filename": "meme.jpg",
+            "mediaType": "image/jpeg",
+            "sourceURL": null,
+            "type": "image"
+          }
+        ],
+        "conversationID": "x-conversation-123",
+        "direction": "inbound",
+        "messageID": "x-message-456",
+        "providerType": "message",
+        "read": false,
+        "reactions": [],
+        "replyToMessageID": null,
+        "senderID": "x-user-42",
+        "senderUsername": "jamie",
+        "sentAt": "2026-10-14T19:42:11.000Z",
+        "text": null,
+        "type": "image"
+      }
+    ],
+    "nextCursor": null
+  }
+}
 ```
 
 Heart the meme. Preview the mutation, then do it:
@@ -160,9 +265,45 @@ Heart the meme. Preview the mutation, then do it:
 ```sh
 dmbridge x reactions add x-message-456 \
   --account personal --reaction '❤️' --dry-run --pretty
+```
 
+```json
+{
+  "account": "personal",
+  "command": "x reactions add x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-4",
+  "result": {
+    "account": "personal",
+    "dryRun": true,
+    "operation": "add",
+    "provider": "x",
+    "request": { "reaction": "❤️" },
+    "target": "x-message-456"
+  }
+}
+```
+
+```sh
 dmbridge x reactions add x-message-456 \
-  --account personal --reaction '❤️'
+  --account personal --reaction '❤️' --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x reactions add x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-5",
+  "result": {
+    "confirmed": true,
+    "effect": "exact"
+  }
+}
 ```
 
 Reply with `sick meme`:
@@ -171,10 +312,46 @@ Reply with `sick meme`:
 printf '%s' '{"type":"text","text":"sick meme"}' |
   dmbridge x messages reply x-message-456 \
     --account personal --request - --dry-run --pretty
+```
 
+```json
+{
+  "account": "personal",
+  "command": "x messages reply x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-6",
+  "result": {
+    "account": "personal",
+    "dryRun": true,
+    "operation": "reply",
+    "provider": "x",
+    "request": { "text": "sick meme", "type": "text" },
+    "target": "x-message-456"
+  }
+}
+```
+
+```sh
 printf '%s' '{"type":"text","text":"sick meme"}' |
   dmbridge x messages reply x-message-456 \
-    --account personal --request -
+    --account personal --request - --pretty
+```
+
+```json
+{
+  "account": "personal",
+  "command": "x messages reply x-message-456",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-7",
+  "result": {
+    "confirmed": true,
+    "effect": "exact"
+  }
+}
 ```
 
 Download the meme to your Downloads folder:
@@ -182,11 +359,25 @@ Download the meme to your Downloads folder:
 ```sh
 dmbridge x attachments download x-attachment-789 \
   --account personal \
-  --destination-url "file://$HOME/Downloads/meme.jpg"
+  --destination-url "file://$HOME/Downloads/meme.jpg" --pretty
 ```
 
-IDs are opaque strings. Keep the exact values dmbridge returns rather than
-trying to parse or construct them yourself.
+```json
+{
+  "account": "personal",
+  "command": "x attachments download x-attachment-789",
+  "ok": true,
+  "protocolVersion": 1,
+  "provider": "x",
+  "requestID": "demo-request-8",
+  "result": {
+    "bytes": 184320,
+    "destinationURL": "file:///Users/you/Downloads/meme.jpg",
+    "mediaType": "image/jpeg",
+    "sha256": "d8e8fca2dc0f896fd7cb4cb0031ba2493a8bdf6d2230c53a8f18b3f4c2e3d7a1"
+  }
+}
+```
 
 ## Help and schemas
 
