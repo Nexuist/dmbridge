@@ -80,12 +80,12 @@ Before tagging:
    `package-lock.json` version.
 2. Complete the automated, contract, and applicable live read-only gates above.
 3. Commit and push a clean release commit.
-4. Create and push the exact matching tag, such as `v0.5.0` for package version
-   `0.5.0`.
+4. Create and push the exact matching tag, such as `v1.0.0` for package version
+   `1.0.0`.
 
 ```sh
-git tag -a v0.5.0 -m "dmbridge v0.5.0"
-git push origin v0.5.0
+git tag -a v1.0.0 -m "dmbridge v1.0.0"
+git push origin v1.0.0
 ```
 
 The workflow rejects a tag that does not exactly match `v` plus the version in

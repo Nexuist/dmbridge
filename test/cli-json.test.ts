@@ -79,7 +79,7 @@ test("CLI global controls provide scoped help, version, JSON, NDJSON, and diagno
     const envelope = JSON.parse((await runCLI(args)).stdout) as {
       result: { version: string; protocolVersion: number; schemaVersion: number };
     };
-    assert.equal(envelope.result.version, "0.5.0");
+    assert.equal(envelope.result.version, "1.0.0");
     assert.equal(envelope.result.protocolVersion, 1);
     assert.equal(envelope.result.schemaVersion, 4);
   }

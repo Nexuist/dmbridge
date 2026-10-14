@@ -47,7 +47,7 @@ while retaining Node.js as its runtime:
 
 ```sh
 npm run package:npm
-npm install --global ./dmbridge-0.5.0.tgz
+npm install --global ./dmbridge-1.0.0.tgz
 dmbridge version --pretty
 ```
 
@@ -57,7 +57,7 @@ run:
 
 ```sh
 npm run package:executable
-./artifacts/dmbridge-0.5.0-macos-arm64 version --pretty
+./artifacts/dmbridge-1.0.0-macos-arm64 version --pretty
 ```
 
 The source, tests, and npm package remain Node-based. Deno is used only as a
