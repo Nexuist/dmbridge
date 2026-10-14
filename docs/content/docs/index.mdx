@@ -1,0 +1,38 @@
+---
+title: dmbridge
+description: One command-line interface for direct messages across social platforms.
+---
+
+dmbridge gives scripts and AI agents a predictable JSON interface for direct
+messages. It supports XChat and Instagram Messaging today, with more platforms
+to come.
+
+<Cards>
+  <Card title="Get started" description="Install dmbridge and connect your first account." href="/docs/getting-started" />
+  <Card title="Try the X workflow" description="Open a DM, heart a meme, reply, and download it." href="/docs/workflow" />
+  <Card title="Browse the objects" description="See every field in messages, conversations, attachments, and more." href="/docs/reference/objects" />
+  <Card title="Read the schemas" description="Explore the complete versioned JSON contract." href="/docs/reference/schemas" />
+</Cards>
+
+## Why it exists
+
+[twocents](https://twocents.com) runs a lot of social media accounts. We wanted
+one practical way for our agents to handle incoming messages without teaching
+each agent a different API, authentication flow, and response format.
+
+dmbridge was built with Codex and GPT-5.6 against those real workflows. The
+offline test suite covers authentication, schemas, pagination, provider
+fixtures, encryption paths, mutations, attachments, and failure behavior. An
+optional live, read-only suite can verify configured X and Instagram accounts.
+
+## The contract
+
+- Primary results are JSON on stdout.
+- Progress, warnings, and diagnostics go to stderr.
+- Every envelope has a stable protocol version.
+- Every mutation supports `--dry-run`.
+- Destructive actions require explicit confirmation.
+- Errors say whether an automatic retry is safe.
+
+Start with [installation and account setup](./getting-started.mdx), or jump
+straight to the [CLI reference](./reference/cli.mdx).

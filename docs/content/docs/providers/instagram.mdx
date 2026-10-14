@@ -1,0 +1,27 @@
+---
+title: Instagram
+description: Prepare an Instagram professional account and connect it to dmbridge.
+---
+
+Instagram's messaging API requires a professional account and a Meta developer
+app. Start by creating an Instagram
+[Creator account](https://help.instagram.com/2358103564437429) or
+[Business account](https://help.instagram.com/502981923235522). Then
+[register as a Meta developer](https://developers.facebook.com/docs/development/register/),
+[create a Meta app](https://developers.facebook.com/docs/development/create-an-app/),
+and follow Meta's
+[Instagram API setup](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/get-started/)
+to obtain an access token.
+
+From a dmbridge repository checkout:
+
+```sh
+./scripts/connect-ig.sh
+```
+
+The script asks for the account name, optional dmbridge home, and access token
+one line at a time. The token is hidden while you type and passed to dmbridge
+through a temporary mode-`0600` file.
+
+The script is safe to rerun. Replacing an existing authorization requires
+explicit confirmation.

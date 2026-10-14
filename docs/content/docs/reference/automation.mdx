@@ -1,0 +1,22 @@
+---
+title: Automation behavior
+description: stdout, stderr, confirmations, timeouts, retries, and exit codes.
+---
+
+- Primary JSON results go to stdout.
+- Progress, warnings, and diagnostics go to stderr.
+- `--no-input` and `--non-interactive` disable prompts but do not authorize an action.
+- `--yes` only bypasses a specific confirmation.
+- Every mutation supports `--dry-run`.
+- Timeouts require units such as `500ms`, `30s`, or `2m`.
+- Success exits with code `0`; meaningful failure classes use documented nonzero codes.
+
+For unattended calls, a useful baseline is:
+
+```text
+--no-input --timeout 30s
+```
+
+Always inspect both the process exit code and the envelope's `ok` field. Before
+retrying a failure, inspect `error.retrySafety`. Never automatically retry
+`unsafe` or `never` failures.

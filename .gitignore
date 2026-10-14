@@ -3,6 +3,11 @@ artifacts/
 dmbridge-*.tgz
 dmbridge-*.tgz.sha256
 node_modules/
+docs/.next/
+docs/.source/
+docs/out/
+docs/next-env.d.ts
+docs/*.tsbuildinfo
 *.log
 .DS_Store
 ._*

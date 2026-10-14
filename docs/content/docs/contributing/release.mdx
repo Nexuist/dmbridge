@@ -1,4 +1,7 @@
-# Release checklist
+---
+title: Release checklist
+description: Verification, packaging, and publishing requirements for a dmbridge release.
+---
 
 A dmbridge release is ready when all applicable checks below pass.
 
@@ -40,12 +43,12 @@ npm run test:live
 ```
 
 This suite may read real account metadata and messages. It must remain
-read-only, skip message-request inboxes with delivery side effects, and never be
-part of the default or CI test command.
+read-only, skip message-request inboxes with delivery side effects, and never
+be part of the default or CI test command.
 
-## Artifact
+## Artifacts
 
-Create the installable executable package:
+Create the installable npm package:
 
 ```sh
 npm run package:npm
@@ -63,23 +66,22 @@ npm run package:executable
 ./artifacts/dmbridge-<version>-<platform>-<architecture> version --pretty
 ```
 
-This release-only path uses Deno's self-extracting compiler so the XChat and
-Juicebox WASM files remain available through the filesystem paths expected by
-their SDKs. It does not change the Node/npm development runtime.
+Deno is used only as the release compiler so the XChat and Juicebox WASM files
+remain available through the filesystem paths expected by their SDKs. The
+source, tests, and npm distribution remain Node-based.
 
 ## GitHub Release
 
 The tag-triggered `.github/workflows/release.yml` workflow verifies the package,
 then builds and smoke-tests native executables on GitHub-hosted macOS, Linux,
-and Windows runners for both x64 and ARM64. It publishes those six executables
-as `.tar.gz` archives that preserve Unix execute permissions, their SHA-256
-files, a consolidated `SHA256SUMS`, and the npm tarball to one GitHub Release.
+and Windows runners for both x64 and ARM64. It publishes those six executables,
+SHA-256 files, a consolidated `SHA256SUMS`, and the npm tarball to one release.
 
 Before tagging:
 
 1. Set the intended semantic version in `package.json` and synchronize the root
    `package-lock.json` version.
-2. Complete the automated, contract, and applicable live read-only gates above.
+2. Complete the automated, contract, and applicable live read-only gates.
 3. Commit and push a clean release commit.
 4. Create and push the exact tag derived from `package.json`.
 
@@ -90,11 +92,11 @@ git push origin "v$VERSION"
 ```
 
 The workflow rejects a tag that does not exactly match `v` plus the version in
-`package.json`. Only the final publish job receives `contents: write`; build and
-verification jobs remain read-only. Publishing uses the repository-scoped
+`package.json`. Only the final publish job receives `contents: write`;
+verification remains read-only. Publishing uses the repository-scoped
 `GITHUB_TOKEN`, so no personal access token is required.
 
-The generated macOS executables are ad-hoc signed by Deno. Public distribution
+Generated macOS executables are ad-hoc signed by Deno. Public distribution
 without Gatekeeper warnings requires a future Developer ID signing and Apple
-notarization step with repository secrets; do not store signing credentials in
+notarization step with repository secrets. Never store signing credentials in
 the repository.

@@ -1,0 +1,16 @@
+---
+title: Schemas
+description: Every published request, result, page, envelope, and domain schema.
+full: true
+---
+
+The complete public JSON Schema contract is rendered below. Schema version 5 is
+immutable; an incompatible contract change will publish a new version.
+
+Use the CLI to retrieve an individual schema as JSON:
+
+```sh
+dmbridge x doctor --schema message.send --pretty
+```
+
+<SchemaCatalog />

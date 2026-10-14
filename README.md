@@ -1,7 +1,8 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.2.0-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.3.0-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
+[![docs](https://github.com/Nexuist/dmbridge/actions/workflows/docs.yml/badge.svg)](https://nexuist.github.io/dmbridge/)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Give your agents one command-line interface for direct messages across social
@@ -394,11 +395,14 @@ dmbridge x doctor --schema message.send --pretty
 dmbridge instagram doctor --schema page.messages --pretty
 ```
 
-The schemas are defined in [`src/protocol.ts`](src/protocol.ts). Provider
+The [documentation site](https://nexuist.github.io/dmbridge/docs/) includes the
+complete schema and object reference generated from the reviewed contract
+snapshot. The schemas are defined in [`src/protocol.ts`](src/protocol.ts). Provider
 credential shapes live in
 [`src/providers/x/credentials.ts`](src/providers/x/credentials.ts) and
 [`src/providers/instagram/credentials.ts`](src/providers/instagram/credentials.ts).
-Agents should read [`docs/agent-usage.md`](docs/agent-usage.md) before operating
+Agents should read
+[`docs/content/docs/agents.mdx`](docs/content/docs/agents.mdx) before operating
 a real account.
 
 ## Automation behavior

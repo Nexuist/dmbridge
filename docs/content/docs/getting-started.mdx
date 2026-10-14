@@ -1,0 +1,59 @@
+---
+title: Getting started
+description: Download dmbridge, connect an account, and verify it.
+---
+
+## Install an executable
+
+Download the archive for your operating system and architecture from the
+[latest GitHub release](https://github.com/Nexuist/dmbridge/releases/latest).
+Releases include self-contained executables for macOS, Linux, and Windows on
+x64 and ARM64, plus SHA-256 checksums.
+
+On macOS or Linux:
+
+```sh
+tar -xzf dmbridge-<version>-<platform>-<architecture>.tar.gz
+chmod +x dmbridge-<version>-<platform>-<architecture>
+sudo install dmbridge-<version>-<platform>-<architecture> /usr/local/bin/dmbridge
+dmbridge version --pretty
+```
+
+On Windows, extract the archive and place the `.exe` somewhere on your `PATH`.
+
+The release also includes an npm tarball for Node.js 22.12 or newer:
+
+```sh
+npm install --global ./dmbridge-<version>.tgz
+```
+
+## Connect an account
+
+dmbridge stores account configuration and credentials under `~/.dmbridge` by
+default. Set `DMBRIDGE_HOME` or pass `--home /absolute/path` to use another
+location. The directory is private to the current user and credential files are
+written with mode `0600`.
+
+From a repository checkout, the connection scripts ask for credentials one
+line at a time and avoid putting secrets in shell history:
+
+```sh
+./scripts/connect-x.sh
+./scripts/connect-ig.sh
+```
+
+See [X setup](./providers/x.mdx) or
+[Instagram setup](./providers/instagram.mdx) for the provider prerequisites.
+
+## Verify the account
+
+`doctor` checks local setup and reports capabilities without touching the
+network. Add `--live` only when you intend to make a read-only provider check.
+
+```sh
+dmbridge x doctor --account personal --pretty
+dmbridge x doctor --account personal --live --pretty
+```
+
+Use `--help` for discovery and `doctor --schema <name>` for machine-readable
+request and result contracts.

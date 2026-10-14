@@ -1,0 +1,31 @@
+---
+title: X
+description: Prepare an X app and connect a personal XChat account.
+---
+
+Create and configure an OAuth 2.0 app using X's
+[developer app guide](https://docs.x.com/fundamentals/developer-apps). Add the
+exact callback URL you plan to use. For local setup, X recommends
+`http://127.0.0.1` rather than `localhost`.
+
+From a dmbridge repository checkout:
+
+```sh
+./scripts/connect-x.sh
+```
+
+The script asks for the account name, client ID, client type, optional client
+secret, and redirect URI one line at a time. It prints the OAuth link, waits for
+the callback URL, optionally stores the XChat passcode, and finishes with a live
+read-only check.
+
+If XChat rejects the passcode, dmbridge immediately forgets it rather than
+risking repeated failed attempts.
+
+The script is safe to rerun. Replacing an existing authorization requires
+explicit confirmation. Set `DMBRIDGE_BIN` when the executable is not named
+`dmbridge` or is not on `PATH`:
+
+```sh
+DMBRIDGE_BIN=/absolute/path/to/dmbridge ./scripts/connect-x.sh
+```

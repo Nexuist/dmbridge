@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+:root {
+  --dmbridge-cyan: #22d3ee;
+  --dmbridge-violet: #8b5cf6;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0 !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+.dmbridge-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--dmbridge-cyan) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--dmbridge-violet) 8%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}

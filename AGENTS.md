@@ -2,7 +2,8 @@
 
 This file is the source of truth for coding agents working in the dmbridge
 repository. For instructions on operating the installed CLI from another
-project, use [`docs/agent-usage.md`](docs/agent-usage.md).
+project, use
+[`docs/content/docs/agents.mdx`](docs/content/docs/agents.mdx).
 
 ## Purpose
 
@@ -93,8 +94,17 @@ exercises, archives, and checksums a self-contained platform binary under
 ignored `artifacts/`; do not migrate the source, tests, or npm distribution away
 from Node without explicit owner approval. Both packaging checks must pass
 before calling their artifacts ready. Follow
-[`docs/release-checklist.md`](docs/release-checklist.md) for the full release
-gate.
+[`docs/content/docs/contributing/release.mdx`](docs/content/docs/contributing/release.mdx)
+for the full release gate.
+
+## Documentation site
+
+`docs/` is a self-contained Fumadocs static site deployed to GitHub Pages.
+Keep its dependencies and lockfile isolated from the root CLI package. The
+schema and command reference components read the reviewed files in
+`test/snapshots/` at build time; do not copy those contracts into handwritten
+documentation. Verify site changes with `npm ci`, `npm run types:check`, and
+`npm run build` from `docs/`.
 
 GitHub Releases are created only by pushing a tag that exactly matches `v` plus
 the `package.json` version. Keep release verification and executable-build jobs

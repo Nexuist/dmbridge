@@ -1,0 +1,65 @@
+---
+title: A five-minute X workflow
+description: Open a personal X DM, heart a meme, reply, and download the image.
+---
+
+Suppose a friend sent a meme to your personal X account.
+
+## Find the conversation
+
+```sh
+dmbridge x conversations list --account personal --limit 1 --pretty
+```
+
+Use the returned conversation ID to list its messages:
+
+```sh
+dmbridge x messages list x-conversation-123 \
+  --account personal --limit 50 --pretty
+```
+
+The newest inbound message contains `messageID: "x-message-456"` and an image
+attachment with `attachmentID: "x-attachment-789"`.
+
+## Heart the meme
+
+Preview the mutation first:
+
+```sh
+dmbridge x reactions add x-message-456 \
+  --account personal --reaction '❤️' --dry-run --pretty
+```
+
+Then run the same action without `--dry-run`:
+
+```sh
+dmbridge x reactions add x-message-456 \
+  --account personal --reaction '❤️' --pretty
+```
+
+## Reply
+
+Text replies do not need a JSON request body:
+
+```sh
+dmbridge x messages reply x-message-456 "sick meme" \
+  --account personal --dry-run --pretty
+```
+
+After inspecting the dry run:
+
+```sh
+dmbridge x messages reply x-message-456 "sick meme" \
+  --account personal --pretty
+```
+
+## Download the image
+
+```sh
+dmbridge x attachments download x-attachment-789 \
+  --account personal \
+  --destination-url "file://$HOME/Downloads/meme.jpg" --pretty
+```
+
+The result includes the destination URL, media type, byte count, and SHA-256
+digest of the saved file.

@@ -1,0 +1,12 @@
+{
+  "title": "dmbridge",
+  "pages": [
+    "index",
+    "getting-started",
+    "workflow",
+    "providers",
+    "reference",
+    "agents",
+    "contributing"
+  ]
+}

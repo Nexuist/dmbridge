@@ -1,4 +1,7 @@
-# Using dmbridge from an agent
+---
+title: Using dmbridge from an agent
+description: Safe discovery, parsing, input, confirmation, and retry behavior for automated callers.
+---
 
 This guide is for automated agents and scripts operating an installed dmbridge
 CLI. Repository contributors should also follow the root `AGENTS.md`.
@@ -28,9 +31,9 @@ with verbosity flags.
 
 ## Parsing results
 
-stdout contains exactly one JSON protocol envelope. stderr contains
-only progress, warnings, and diagnostics. Always check both the process exit
-code and the structured `ok` field.
+stdout contains exactly one JSON protocol envelope. stderr contains only
+progress, warnings, and diagnostics. Always check both the process exit code
+and the structured `ok` field.
 
 JSON output is one protocol-v1 envelope. Retain provider IDs, account names,
 cursors, conversation IDs, message IDs, request IDs, and attachment IDs as

@@ -30,7 +30,7 @@ try {
   for (const required of [
     "LICENSE",
     "README.md",
-    "docs/agent-usage.md",
+    "docs/content/docs/agents.mdx",
     "dist/src/cli.js",
     "package.json",
     "scripts/connect-ig.sh",
