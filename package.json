@@ -1,0 +1,44 @@
+{
+  "name": "dmbridge",
+  "version": "0.5.0",
+  "description": "A provider-neutral JSON CLI for direct messages.",
+  "type": "module",
+  "bin": {
+    "dmbridge": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src",
+    "docs/agent-usage.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true })\"",
+    "clean:metadata": "node --input-type=module -e \"import { readdirSync, rmSync } from 'node:fs'; const directories = ['dist']; for (const directory of directories) for (const entry of readdirSync(directory, { withFileTypes: true })) { const path = directory + '/' + entry.name; if (entry.name.startsWith('._')) rmSync(path, { recursive: true, force: true }); else if (entry.isDirectory()) directories.push(path) }\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run clean:metadata",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "contracts:update": "npm run build && node test/update-contract-snapshots.mjs",
+    "package:executable": "node scripts/package.mjs executable",
+    "package:npm": "node scripts/package.mjs npm",
+    "prepack": "npm run build",
+    "test:compile": "npm run clean && tsc -p tsconfig.json && npm run clean:metadata",
+    "test": "npm run test:compile && node --test dist/test/*.test.js",
+    "test:package": "node test/package-smoke.mjs",
+    "test:live": "npm run test:compile && DMBRIDGE_READONLY_LIVE=1 node --test dist/test/live/*.test.js",
+    "test:readonly": "npm run test:live"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "dependencies": {
+    "@xdevplatform/chat-xdk": "0.5.0",
+    "commander": "15.0.0",
+    "juicebox-sdk": "0.3.4",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  },
+  "license": "MIT"
+}

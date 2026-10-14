@@ -1,0 +1,1652 @@
+{
+  "schemaVersion": 4,
+  "schemas": {
+    "participant": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "username": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "displayName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "userID",
+        "username",
+        "displayName"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/participant.json"
+    },
+    "attachment": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "attachmentID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "image",
+            "video",
+            "audio",
+            "voice",
+            "file",
+            "gif",
+            "sticker",
+            "link",
+            "location",
+            "contact",
+            "sharedPost",
+            "sharedStory",
+            "sharedReel",
+            "reply",
+            "quote",
+            "system",
+            "deleted",
+            "unsupported",
+            "unknown"
+          ]
+        },
+        "mediaType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "filename": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceURL": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "providerData": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "attachmentID",
+        "type",
+        "mediaType",
+        "filename",
+        "sourceURL"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/attachment.json"
+    },
+    "reaction": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "reaction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "userIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reactedByAuthenticatedUser": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "reaction",
+        "userIDs",
+        "reactedByAuthenticatedUser"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/reaction.json"
+    },
+    "message": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "messageID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conversationID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "senderID": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "senderUsername": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sentAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "voice",
+            "file",
+            "gif",
+            "sticker",
+            "link",
+            "location",
+            "contact",
+            "sharedPost",
+            "sharedStory",
+            "sharedReel",
+            "reply",
+            "quote",
+            "system",
+            "deleted",
+            "unsupported",
+            "unknown"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "inbound",
+            "outbound",
+            "unknown"
+          ]
+        },
+        "replyToMessageID": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "read": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/attachment.json"
+          }
+        },
+        "reactions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/reaction.json"
+          }
+        },
+        "providerType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "providerData": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "messageID",
+        "conversationID",
+        "senderID",
+        "senderUsername",
+        "sentAt",
+        "type",
+        "text",
+        "direction",
+        "replyToMessageID",
+        "read",
+        "attachments",
+        "reactions",
+        "providerType"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/message.json"
+    },
+    "conversation": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "conversationID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "group",
+            "unknown"
+          ]
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "xchat",
+            "instagram"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/participant.json"
+          }
+        },
+        "unreadCount": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unread": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "latestMessageAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latestMessageID": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastReadMessageID": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "muted": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "archived": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "providerData": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "conversationID",
+        "type",
+        "protocol",
+        "title",
+        "participants",
+        "unreadCount",
+        "unread",
+        "latestMessageAt",
+        "latestMessageID",
+        "lastReadMessageID",
+        "muted",
+        "archived"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/conversation.json"
+    },
+    "messageRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "requestID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conversation": {
+          "$ref": "https://dmbridge.dev/schemas/v4/conversation.json"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "received",
+            "sent",
+            "none",
+            "unknown"
+          ]
+        },
+        "category": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "priority",
+                "hidden",
+                "requests"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "senderRecentlyModifiedProfile": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "socialProofUserIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hasMoreMessages": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "detailReadMarksDelivered": {
+          "type": "boolean"
+        },
+        "providerData": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "requestID",
+        "conversation",
+        "state",
+        "category",
+        "senderRecentlyModifiedProfile",
+        "socialProofUserIDs",
+        "hasMoreMessages",
+        "detailReadMarksDelivered"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/messageRequest.json"
+    },
+    "capabilities": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "x",
+            "instagram"
+          ]
+        },
+        "account": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "authenticated": {
+          "type": "boolean"
+        },
+        "groupConversations": {
+          "type": "boolean"
+        },
+        "folders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "messageTypes": {
+          "type": "object",
+          "properties": {
+            "read": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "text",
+                  "image",
+                  "video",
+                  "audio",
+                  "voice",
+                  "file",
+                  "gif",
+                  "sticker",
+                  "link",
+                  "location",
+                  "contact",
+                  "sharedPost",
+                  "sharedStory",
+                  "sharedReel",
+                  "reply",
+                  "quote",
+                  "system",
+                  "deleted",
+                  "unsupported",
+                  "unknown"
+                ]
+              }
+            },
+            "send": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "text",
+                  "image",
+                  "video",
+                  "audio",
+                  "voice",
+                  "file",
+                  "gif",
+                  "sticker",
+                  "link",
+                  "location",
+                  "contact",
+                  "sharedPost",
+                  "sharedStory",
+                  "sharedReel",
+                  "reply",
+                  "quote",
+                  "system",
+                  "deleted",
+                  "unsupported",
+                  "unknown"
+                ]
+              }
+            }
+          },
+          "required": [
+            "read",
+            "send"
+          ],
+          "additionalProperties": false
+        },
+        "mutations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "messageReadMode": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "through",
+            "conversation",
+            "unsupported"
+          ]
+        },
+        "attachments": {
+          "type": "object",
+          "properties": {
+            "list": {
+              "type": "boolean"
+            },
+            "download": {
+              "type": "boolean"
+            },
+            "send": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "list",
+            "download",
+            "send"
+          ],
+          "additionalProperties": false
+        },
+        "messageRequests": {
+          "type": "object",
+          "properties": {
+            "list": {
+              "type": "boolean"
+            },
+            "get": {
+              "type": "boolean"
+            },
+            "messages": {
+              "type": "boolean"
+            },
+            "accept": {
+              "type": "boolean"
+            },
+            "decline": {
+              "type": "boolean"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "detailReadMarksDelivered": {
+              "type": "boolean"
+            },
+            "acceptRequiresReply": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "list",
+            "get",
+            "messages",
+            "accept",
+            "decline",
+            "categories",
+            "detailReadMarksDelivered",
+            "acceptRequiresReply"
+          ],
+          "additionalProperties": false
+        },
+        "xchat": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "provider",
+        "account",
+        "authenticated",
+        "groupConversations",
+        "folders",
+        "messageTypes",
+        "mutations",
+        "messageReadMode",
+        "attachments",
+        "messageRequests",
+        "limitations"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/capabilities.json"
+    },
+    "page.conversations": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/conversation.json"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/page.conversations.json"
+    },
+    "page.messages": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/message.json"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/page.messages.json"
+    },
+    "page.messageRequests": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/messageRequest.json"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/page.messageRequests.json"
+    },
+    "page.messageRequestMessages": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/message.json"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hasMoreMessages": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor",
+        "hasMoreMessages"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/page.messageRequestMessages.json"
+    },
+    "mutation.result": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "confirmed": {
+          "type": "boolean"
+        },
+        "effect": {
+          "type": "string"
+        },
+        "providerResponse": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "confirmed",
+        "effect"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/mutation.result.json"
+    },
+    "envelope.success": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "const": true
+        },
+        "protocolVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "provider": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "x",
+                "instagram"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "account": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requestID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "string"
+        },
+        "result": {}
+      },
+      "required": [
+        "ok",
+        "protocolVersion",
+        "provider",
+        "account",
+        "requestID",
+        "command",
+        "result"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/envelope.success.json"
+    },
+    "envelope.error": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "const": false
+        },
+        "protocolVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "provider": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "x",
+                "instagram"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "account": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requestID": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "string"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "retrySafety": {
+              "type": "string",
+              "enum": [
+                "safe",
+                "unsafe",
+                "never"
+              ]
+            },
+            "details": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retrySafety",
+            "details"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ok",
+        "protocolVersion",
+        "provider",
+        "account",
+        "requestID",
+        "command",
+        "error"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/envelope.error.json"
+    },
+    "stream.record": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean",
+              "const": true
+            },
+            "protocolVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "provider": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "x",
+                    "instagram"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "account": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requestID": {
+              "type": "string",
+              "minLength": 1
+            },
+            "command": {
+              "type": "string"
+            },
+            "recordType": {
+              "type": "string",
+              "const": "result"
+            },
+            "result": {}
+          },
+          "required": [
+            "ok",
+            "protocolVersion",
+            "provider",
+            "account",
+            "requestID",
+            "command",
+            "recordType",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean",
+              "const": true
+            },
+            "protocolVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "provider": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "x",
+                    "instagram"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "account": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requestID": {
+              "type": "string",
+              "minLength": 1
+            },
+            "command": {
+              "type": "string"
+            },
+            "recordType": {
+              "type": "string",
+              "const": "item"
+            },
+            "collection": {
+              "type": "string",
+              "minLength": 1
+            },
+            "index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "result": {}
+          },
+          "required": [
+            "ok",
+            "protocolVersion",
+            "provider",
+            "account",
+            "requestID",
+            "command",
+            "recordType",
+            "collection",
+            "index",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean",
+              "const": true
+            },
+            "protocolVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "provider": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "x",
+                    "instagram"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "account": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requestID": {
+              "type": "string",
+              "minLength": 1
+            },
+            "command": {
+              "type": "string"
+            },
+            "recordType": {
+              "type": "string",
+              "const": "summary"
+            },
+            "collection": {
+              "type": "string",
+              "minLength": 1
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "result": {}
+          },
+          "required": [
+            "ok",
+            "protocolVersion",
+            "provider",
+            "account",
+            "requestID",
+            "command",
+            "recordType",
+            "collection",
+            "count",
+            "result"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean",
+              "const": false
+            },
+            "protocolVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "provider": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "x",
+                    "instagram"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "account": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requestID": {
+              "type": "string",
+              "minLength": 1
+            },
+            "command": {
+              "type": "string"
+            },
+            "recordType": {
+              "type": "string",
+              "const": "error"
+            },
+            "error": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "retrySafety": {
+                  "type": "string",
+                  "enum": [
+                    "safe",
+                    "unsafe",
+                    "never"
+                  ]
+                },
+                "details": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retrySafety",
+                "details"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "ok",
+            "protocolVersion",
+            "provider",
+            "account",
+            "requestID",
+            "command",
+            "recordType",
+            "error"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "$id": "https://dmbridge.dev/schemas/v4/stream.record.json"
+    },
+    "accounts.result": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": [
+                "x",
+                "instagram"
+              ]
+            },
+            "accounts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "provider",
+            "accounts"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "providers": {
+              "type": "object",
+              "properties": {
+                "instagram": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "x": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "instagram",
+                "x"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "providers"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "$id": "https://dmbridge.dev/schemas/v4/accounts.result.json"
+    },
+    "doctor": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "x",
+            "instagram"
+          ]
+        },
+        "account": {
+          "type": "string"
+        },
+        "live": {
+          "type": "boolean"
+        },
+        "healthy": {
+          "type": "boolean"
+        },
+        "readReady": {
+          "type": "boolean"
+        },
+        "mutationReady": {
+          "type": "boolean"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "warn",
+                  "fail"
+                ]
+              },
+              "message": {
+                "type": "string"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "id",
+              "status",
+              "message",
+              "details"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "capabilities": {
+          "$ref": "https://dmbridge.dev/schemas/v4/capabilities.json"
+        },
+        "contracts": {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "names": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "selected": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "schema": {}
+                  },
+                  "required": [
+                    "name",
+                    "schema"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "names",
+            "selected"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "provider",
+        "account",
+        "live",
+        "healthy",
+        "readReady",
+        "mutationReady",
+        "checks",
+        "capabilities",
+        "contracts"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/doctor.json"
+    },
+    "reactions.result": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://dmbridge.dev/schemas/v4/reaction.json"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/reactions.result.json"
+    },
+    "attachment.download": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "destinationURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "mediaType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "destinationURL",
+        "mediaType",
+        "bytes",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/attachment.download.json"
+    },
+    "accounts.add.request": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "description": "Exact Instagram credential, X OAuth client, X callback URL, or X code/state request. Secrets are read from --request or stdin and are never accepted as flags.",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string",
+              "minLength": 1
+            },
+            "accountID": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "accountUsername": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "apiVersion": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "accessToken",
+            "accountID",
+            "accountUsername",
+            "apiVersion"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "clientID": {
+              "type": "string",
+              "minLength": 1
+            },
+            "clientSecret": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "clientType": {
+              "type": "string",
+              "enum": [
+                "public",
+                "confidential"
+              ]
+            },
+            "redirectURI": {
+              "type": "string",
+              "format": "uri"
+            },
+            "realmTokenIssuerURL": {
+              "default": null,
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "clientID",
+            "clientSecret",
+            "clientType",
+            "redirectURI",
+            "realmTokenIssuerURL"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "callbackURL": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "callbackURL"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "code",
+            "state"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "$id": "https://dmbridge.dev/schemas/v4/accounts.add.request.json"
+    },
+    "message.send": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "voice",
+            "file",
+            "gif",
+            "sticker",
+            "link",
+            "location",
+            "contact",
+            "sharedPost",
+            "sharedStory",
+            "sharedReel",
+            "reply",
+            "quote",
+            "system",
+            "deleted",
+            "unsupported",
+            "unknown"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "recipientID": {
+          "type": "string"
+        },
+        "requestID": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/message.send.json"
+    },
+    "message.edit": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "text"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/message.edit.json"
+    },
+    "reaction.request": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "reaction": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "reaction"
+      ],
+      "additionalProperties": false,
+      "$id": "https://dmbridge.dev/schemas/v4/reaction.request.json"
+    }
+  }
+}
