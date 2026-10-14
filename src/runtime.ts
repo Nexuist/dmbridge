@@ -38,8 +38,6 @@ export const configureRuntime = (options: Partial<RuntimeOptions>) => {
   Object.assign(runtime, options);
 };
 
-export const runtimeOptions = () => ({ ...runtime });
-
 export const timeoutSignal = (fallbackMs: number) =>
   AbortSignal.timeout(runtime.timeoutMs ?? fallbackMs);
 

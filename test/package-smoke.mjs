@@ -72,14 +72,14 @@ try {
   const home = join(temporaryDirectory, "home");
   const environment = { ...process.env, DMBRIDGE_HOME: home };
   const version = JSON.parse(
-    (await run(executable, ["version", "--json", "--no-input"], {
+    (await run(executable, ["version", "--output", "json", "--no-input"], {
       env: environment,
     })).stdout,
   );
   assert.equal(version.ok, true);
   assert.equal(version.result.version, report.version);
 
-  const help = await run(executable, ["help", "--json", "--no-input"], {
+  const help = await run(executable, ["help", "--output", "json", "--no-input"], {
     env: environment,
   });
   const envelope = JSON.parse(help.stdout);

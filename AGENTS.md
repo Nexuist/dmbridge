@@ -48,8 +48,8 @@ registered definitions.
 
 ## CLI contract
 
-- Preserve `--help`, `-h`, `--version`, JSON, non-interactive, timeout, color,
-  quiet, verbosity, and dry-run behavior across appropriate commands.
+- Preserve `--help`, `-h`, `--version`, JSON, non-interactive, timeout, quiet,
+  verbosity, and dry-run behavior across appropriate commands.
 - Write primary results only to stdout. Write progress, warnings, and
   diagnostics only to stderr.
 - Keep JSON envelopes versioned. Treat a published schema version as immutable;

@@ -132,8 +132,6 @@ const required = <T>(value: T | null, label: string): T => {
 };
 
 const adapter = (context: Context) => required(context.adapter, "adapter");
-const store = (context: Context) => required(context.store, "store");
-const provider = (context: Context) => required(context.provider, "provider");
 
 const integerOption = (
   context: Context,
@@ -650,7 +648,6 @@ export const getCLIHelp = (prefix: string[] = []) => {
     "--home <absolute-path>",
     "--request-id <id>",
     "--output <json>",
-    "--json",
     "--pretty",
     "--timeout <duration-with-unit>",
     "--no-input, --non-interactive",
@@ -696,8 +693,7 @@ const earlyOptions = (argv: string[]): Values => {
       const name = flag.slice(0, separator);
       const inlineKey = valueFlags.get(name);
       if (inlineKey) values[inlineKey] = flag.slice(separator + 1);
-    } else if (flag === "--json") values.json = true;
-    else if (flag === "--pretty") values.pretty = true;
+    } else if (flag === "--pretty") values.pretty = true;
     else if (flag === "--quiet") values.quiet = true;
     else if (flag === "-v" || flag === "--verbose") values.verbose = true;
     else if (flag === "--no-input") values.input = false;
@@ -735,7 +731,6 @@ export const parseCommand = (argv: string[]): ParsedCommand => {
     .option("--pretty")
     .option("--request-id <id>")
     .option("--output <format>")
-    .option("--json")
     .option("--timeout <duration>")
     .option("--quiet")
     .option("-v, --verbose")

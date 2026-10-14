@@ -1,6 +1,6 @@
 {
   "name": "dmbridge",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "A provider-neutral JSON CLI for direct messages.",
   "type": "module",
   "bin": {
@@ -26,8 +26,7 @@
     "test:compile": "npm run clean && tsc -p tsconfig.json && npm run clean:metadata",
     "test": "npm run test:compile && node --test dist/test/*.test.js",
     "test:package": "node test/package-smoke.mjs",
-    "test:live": "npm run test:compile && DMBRIDGE_READONLY_LIVE=1 node --test dist/test/live/*.test.js",
-    "test:readonly": "npm run test:live"
+    "test:live": "npm run test:compile && DMBRIDGE_READONLY_LIVE=1 node --test dist/test/live/*.test.js"
   },
   "engines": {
     "node": ">=22.12"

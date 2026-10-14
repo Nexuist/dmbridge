@@ -1,6 +1,5 @@
 import { Buffer } from "node:buffer";
 
-import type { AuthStore } from "../../auth.js";
 import { downloadToFileURL } from "../../download.js";
 import {
   DmbridgeError,
