@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.1.0-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.1.1-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -135,65 +135,53 @@ DMBRIDGE_BIN=/absolute/path/to/dmbridge ./scripts/connect-x.sh
 ## A five-minute personal X workflow
 
 Suppose a friend just sent a meme to your personal X account. These examples use
-`jq` to pull opaque IDs out of dmbridge's JSON responses.
+made-up IDs so every step is a plain terminal command. Replace them with the
+IDs returned by the preceding command.
 
 Open the latest conversation:
 
 ```sh
-ACCOUNT=personal
-CONVERSATION_ID=$(dmbridge x conversations list \
-  --account "$ACCOUNT" --limit 1 |
-  jq -r '.result.items[0].conversationID')
+dmbridge x conversations list --account personal --limit 1 --pretty
 
-dmbridge x conversations get "$CONVERSATION_ID" \
-  --account "$ACCOUNT" --pretty
+dmbridge x conversations get x-conversation-123 \
+  --account personal --pretty
 ```
 
-Find the newest inbound message with an image and keep both IDs:
+Find the newest inbound message with an image. Its result includes the message
+ID and attachment ID used below:
 
 ```sh
-MESSAGES=$(dmbridge x messages list "$CONVERSATION_ID" \
-  --account "$ACCOUNT" --limit 50)
-
-MEME=$(printf '%s' "$MESSAGES" | jq -c '
-  [.result.items[]
-    | select(.direction == "inbound")
-    | . as $message
-    | .attachments[]
-    | select(.type == "image")
-    | {messageID: $message.messageID, attachmentID: .attachmentID}][0]')
-
-MESSAGE_ID=$(printf '%s' "$MEME" | jq -r '.messageID')
-ATTACHMENT_ID=$(printf '%s' "$MEME" | jq -r '.attachmentID')
+dmbridge x messages list x-conversation-123 \
+  --account personal --limit 50 --pretty
 ```
 
 Heart the meme. Preview the mutation, then do it:
 
 ```sh
-dmbridge x reactions add "$MESSAGE_ID" \
-  --account "$ACCOUNT" --reaction '❤️' --dry-run --pretty
+dmbridge x reactions add x-message-456 \
+  --account personal --reaction '❤️' --dry-run --pretty
 
-dmbridge x reactions add "$MESSAGE_ID" \
-  --account "$ACCOUNT" --reaction '❤️'
+dmbridge x reactions add x-message-456 \
+  --account personal --reaction '❤️'
 ```
 
 Reply with `sick meme`:
 
 ```sh
 printf '%s' '{"type":"text","text":"sick meme"}' |
-  dmbridge x messages reply "$MESSAGE_ID" \
-    --account "$ACCOUNT" --request - --dry-run --pretty
+  dmbridge x messages reply x-message-456 \
+    --account personal --request - --dry-run --pretty
 
 printf '%s' '{"type":"text","text":"sick meme"}' |
-  dmbridge x messages reply "$MESSAGE_ID" \
-    --account "$ACCOUNT" --request -
+  dmbridge x messages reply x-message-456 \
+    --account personal --request -
 ```
 
 Download the meme to your Downloads folder:
 
 ```sh
-dmbridge x attachments download "$ATTACHMENT_ID" \
-  --account "$ACCOUNT" \
+dmbridge x attachments download x-attachment-789 \
+  --account personal \
   --destination-url "file://$HOME/Downloads/meme.jpg"
 ```
 
