@@ -113,7 +113,7 @@ async function packageExecutable() {
     const home = join(temporaryDirectory, "home");
     const environment = { ...process.env, DMBRIDGE_HOME: home };
     const version = JSON.parse(
-      (await run(temporaryExecutable, ["version", "--output", "json", "--no-input"], {
+      (await run(temporaryExecutable, ["version", "--no-input"], {
         env: environment,
       })).stdout,
     );
@@ -123,7 +123,7 @@ async function packageExecutable() {
     const accounts = JSON.parse(
       (await run(
         temporaryExecutable,
-        ["accounts", "list", "--output", "json", "--no-input"],
+        ["accounts", "list", "--no-input"],
         { env: environment },
       )).stdout,
     );

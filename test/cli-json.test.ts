@@ -79,7 +79,7 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
     const envelope = JSON.parse((await runCLI(args)).stdout) as {
       result: { version: string; protocolVersion: number; schemaVersion: number };
     };
-    assert.equal(envelope.result.version, "2.1.4");
+    assert.equal(envelope.result.version, "2.1.5");
     assert.equal(envelope.result.protocolVersion, 1);
     assert.equal(envelope.result.schemaVersion, 5);
   }
@@ -94,13 +94,10 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
       command.startsWith("dmbridge x messages ")),
   );
 
-  const json = await runCLI(["help", "--output", "json"]);
-  assert.equal(JSON.parse(json.stdout).ok, true);
-
   for (const args of [
     ["accounts", "list", "--ndjson"],
     ["help", "--json"],
-    ["help", "--output", "ndjson"],
+    ["help", "--output", "json"],
     ["help", "--no-color"],
   ]) {
     await assert.rejects(runCLI(args), (error: unknown) => {
@@ -110,7 +107,7 @@ test("CLI global controls provide scoped help, version, JSON, and diagnostics", 
         error?: { code?: string; message?: string };
       };
       assert.equal(envelope.error?.code, "bridge.invalidRequest");
-      assert.match(envelope.error?.message ?? "", /unknown option|output must be json/);
+      assert.match(envelope.error?.message ?? "", /unknown option/);
       return true;
     });
   }

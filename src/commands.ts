@@ -81,10 +81,6 @@ const optionValue = (command: ParsedCommand | Context, name: string) =>
   command.options[optionKey(name)];
 
 export const configureCommandRuntime = (command: ParsedCommand) => {
-  const output = option(command, "output");
-  if (output !== null && output !== "json") {
-    throw invalidRequest("--output must be json.");
-  }
   const quiet = hasOption(command, "quiet");
   const verbose = hasOption(command, "verbose");
   const requestedVerbosity = option(command, "verbosity");
@@ -647,7 +643,6 @@ export const getCLIHelp = (prefix: string[] = []) => {
     "-V, --version",
     "--home <absolute-path>",
     "--request-id <id>",
-    "--output <json>",
     "--pretty",
     "--timeout <duration-with-unit>",
     "--no-input, --non-interactive",
@@ -676,7 +671,6 @@ const commandWords = new Set([
 const earlyOptions = (argv: string[]): Values => {
   const values: Values = {};
   const valueFlags = new Map([
-    ["--output", "output"],
     ["--timeout", "timeout"],
     ["--verbosity", "verbosity"],
     ["--request-id", "requestId"],
@@ -730,7 +724,6 @@ export const parseCommand = (argv: string[]): ParsedCommand => {
     .option("--home <path>")
     .option("--pretty")
     .option("--request-id <id>")
-    .option("--output <format>")
     .option("--timeout <duration>")
     .option("--quiet")
     .option("-v, --verbose")

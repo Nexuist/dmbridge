@@ -1,6 +1,6 @@
 # dmbridge
 
-[![version](https://img.shields.io/badge/version-2.1.4-blue)](package.json)
+[![version](https://img.shields.io/badge/version-2.1.5-blue)](package.json)
 [![release](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml/badge.svg)](https://github.com/Nexuist/dmbridge/actions/workflows/release.yml)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -406,6 +406,7 @@ a real account.
 ## Automation behavior
 
 - Primary JSON results go to stdout.
+- Output is always JSON; no format flag is required.
 - Progress, warnings, and diagnostics go to stderr.
 - `--no-input` and `--non-interactive` disable prompts but do not authorize an
   action.
@@ -418,7 +419,7 @@ a real account.
 For unattended calls, a useful baseline is:
 
 ```text
---output json --no-input --timeout 30s
+--no-input --timeout 30s
 ```
 
 ## Development and tests
