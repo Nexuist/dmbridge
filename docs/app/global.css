@@ -115,6 +115,19 @@ html > body[data-scroll-locked] {
   color: var(--tc-gold);
 }
 
+.tc-company-link,
+.tc-product-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.tc-company-link:hover .tc-wordmark-company,
+.tc-product-link:hover {
+  color: var(--tc-green-bright);
+}
+
 .tc-wordmark-company {
   color: var(--tc-green);
   font-weight: 750;
@@ -125,9 +138,10 @@ html > body[data-scroll-locked] {
   font-weight: 400;
 }
 
-.tc-wordmark-product {
+.tc-product-link {
   color: var(--color-fd-foreground);
   font-weight: 650;
+  transition: color 140ms ease;
 }
 
 .tc-kicker {

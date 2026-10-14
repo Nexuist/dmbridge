@@ -4,18 +4,18 @@ import Link from "next/link";
 const features = [
   {
     icon: MessageCircle,
-    title: "One inbox interface",
-    body: "Read and act on X and Instagram DMs through one predictable command surface.",
+    title: "Meet every inbox the same way",
+    body: "X and Instagram share one predictable command line without losing what makes each platform different.",
   },
   {
     icon: Braces,
-    title: "Stable JSON",
-    body: "Versioned envelopes and published object schemas make automation less fragile.",
+    title: "JSON that stays put",
+    body: "Versioned responses and published schemas give agents a contract they can actually rely on.",
   },
   {
     icon: Bot,
-    title: "Built for agents",
-    body: "Dry runs, explicit confirmation, retry safety, and clean stdout keep agents honest.",
+    title: "Safety before surprises",
+    body: "Dry runs, explicit confirmation, timeouts, and clear retry rules keep every action under control.",
   },
 ];
 
@@ -25,26 +25,27 @@ export default function HomePage() {
       <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 py-20 lg:px-8 lg:py-28">
         <div className="grid items-center gap-14 lg:grid-cols-[1.12fr_0.88fr]">
           <div className="max-w-3xl">
-            <p className="tc-kicker mb-6">X + Instagram · more to come</p>
+            <p className="tc-kicker mb-6">DM access for AI agents</p>
             <h1 className="tc-hero-title text-5xl font-extrabold sm:text-7xl">
-              Your agents, finally good at <span>DMs.</span>
+              Let your agents handle the <span>DMs.</span>
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-fd-muted-foreground sm:text-xl">
-              dmbridge is a provider-neutral CLI for reading conversations,
-              replying, reacting, and downloading attachments through stable JSON.
+              dmbridge gives them one reliable CLI to read, reply, react, and
+              download attachments across X and Instagram. More platforms are on
+              the way.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href="/docs"
                 className="tc-primary-button inline-flex items-center gap-2 rounded-full bg-fd-primary px-5 py-3 font-semibold text-fd-primary-foreground transition-transform hover:-translate-y-0.5"
               >
-                Read the docs <ArrowRight className="size-4" />
+                Get started <ArrowRight className="size-4" />
               </Link>
               <a
                 href="https://github.com/Nexuist/dmbridge/releases/latest"
                 className="tc-secondary-button tc-download-button inline-flex items-center gap-2 rounded-full border px-5 py-3 font-semibold transition-colors"
               >
-                <Download className="size-4" /> Download
+                <Download className="size-4" /> Download dmbridge
               </a>
             </div>
           </div>
@@ -74,7 +75,7 @@ export default function HomePage() {
               </pre>
               <div className="flex items-center gap-2 border-t pt-4 text-xs text-fd-muted-foreground">
                 <span className="size-2 rounded-full bg-fd-primary shadow-[0_0_12px_var(--tc-green)]" />
-                stable JSON · agent ready
+                reply sent · clean JSON on stdout
               </div>
             </div>
           </div>
