@@ -77,13 +77,12 @@ try {
   assert.equal(version.ok, true);
   assert.equal(version.result.version, report.version);
 
-  const help = await run(executable, ["help", "--ndjson", "--no-input"], {
+  const help = await run(executable, ["help", "--json", "--no-input"], {
     env: environment,
   });
-  const records = help.stdout.trim().split("\n").map(JSON.parse);
-  assert.ok(records.length > 1);
-  assert.equal(records.at(-1).recordType, "summary");
-  assert.equal(records.at(-1).count, records.length - 1);
+  const envelope = JSON.parse(help.stdout);
+  assert.equal(envelope.ok, true);
+  assert.ok(envelope.result.commands.length > 1);
 
   process.stdout.write(
     `Packed and exercised ${report.filename} through its dmbridge executable.\n`,

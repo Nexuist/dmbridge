@@ -14,14 +14,10 @@ import {
   successEnvelope,
   writeEnvelope,
   type CommandContext,
-  type OutputFormat,
 } from "./protocol.js";
 import { writeDiagnostic } from "./runtime.js";
 
-let outputOptions: { format: OutputFormat; pretty: boolean } = {
-  format: "json",
-  pretty: false,
-};
+let outputOptions = { pretty: false };
 let context: CommandContext = {
   provider: null,
   account: null,

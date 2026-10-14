@@ -18,7 +18,6 @@ import {
   SendRequestSchema,
   unsupportedOperation,
   type DoctorResult,
-  type OutputFormat,
   type ProviderID,
 } from "./protocol.js";
 import {
@@ -83,18 +82,8 @@ const optionValue = (command: ParsedCommand | Context, name: string) =>
 
 export const configureCommandRuntime = (command: ParsedCommand) => {
   const output = option(command, "output");
-  const json = hasOption(command, "json");
-  const ndjson = hasOption(command, "ndjson");
-  if (json && ndjson) throw invalidRequest("--json and --ndjson cannot be combined.");
-  if (output !== null && output !== "json" && output !== "ndjson") {
-    throw invalidRequest("--output must be json or ndjson.");
-  }
-  if ((json && output === "ndjson") || (ndjson && output === "json")) {
-    throw invalidRequest("Output format flags select conflicting formats.");
-  }
-  const format: OutputFormat = ndjson ? "ndjson" : json ? "json" : output ?? "json";
-  if (format === "ndjson" && hasOption(command, "pretty")) {
-    throw invalidRequest("--pretty cannot be combined with NDJSON output.");
+  if (output !== null && output !== "json") {
+    throw invalidRequest("--output must be json.");
   }
   const quiet = hasOption(command, "quiet");
   const verbose = hasOption(command, "verbose");
@@ -123,7 +112,7 @@ export const configureCommandRuntime = (command: ParsedCommand) => {
       optionValue(command, "input") === false ||
       hasOption(command, "non-interactive"),
   });
-  return { format, pretty: hasOption(command, "pretty") };
+  return { pretty: hasOption(command, "pretty") };
 };
 
 const requiredOption = (context: Context, name: string) => {
@@ -650,7 +639,7 @@ export const getCLIHelp = (prefix: string[] = []) => {
       : `dmbridge ${prefix.join(" ")} <action> [flags]`,
   scope: prefix,
   rules: [
-    "stdout contains only the selected JSON or NDJSON result contract",
+    "stdout contains only the JSON result contract",
     "progress, warnings, and diagnostics are written only to stderr",
     "select a provider explicitly; there is no unified inbox",
     "secrets and mutation bodies are read from files or stdin, never flags",
@@ -661,9 +650,8 @@ export const getCLIHelp = (prefix: string[] = []) => {
     "-V, --version",
     "--home <absolute-path>",
     "--request-id <id>",
-    "--output <json|ndjson>",
+    "--output <json>",
     "--json",
-    "--ndjson",
     "--pretty",
     "--timeout <duration-with-unit>",
     "--no-input, --non-interactive",
@@ -711,7 +699,6 @@ const earlyOptions = (argv: string[]): Values => {
       const inlineKey = valueFlags.get(name);
       if (inlineKey) values[inlineKey] = flag.slice(separator + 1);
     } else if (flag === "--json") values.json = true;
-    else if (flag === "--ndjson") values.ndjson = true;
     else if (flag === "--pretty") values.pretty = true;
     else if (flag === "--quiet") values.quiet = true;
     else if (flag === "-v" || flag === "--verbose") values.verbose = true;
@@ -752,7 +739,6 @@ export const parseCommand = (argv: string[]): ParsedCommand => {
     .option("--request-id <id>")
     .option("--output <format>")
     .option("--json")
-    .option("--ndjson")
     .option("--timeout <duration>")
     .option("--quiet")
     .option("-v, --verbose")

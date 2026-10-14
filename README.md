@@ -1,9 +1,8 @@
 # dmbridge
 
 `dmbridge` is a standalone TypeScript CLI for reading and managing direct
-messages through provider APIs. JSON is the default output, NDJSON is available
-for collections, and stdout never contains progress or diagnostics, so commands
-compose cleanly with `jq` and streaming consumers.
+messages through provider APIs. JSON is the only output format, and stdout never
+contains progress or diagnostics, so commands compose cleanly with `jq`.
 
 The project is provider-neutral without pretending providers have identical
 semantics. You always select one provider and one account; there is deliberately
@@ -11,9 +10,9 @@ no unified inbox.
 
 ## Status
 
-Version 0.5 consolidates setup under `accounts`, folds capabilities and schema
+Version 2 consolidates setup under `accounts`, folds capabilities and schema
 discovery into `doctor`, and nests message requests under `conversations`.
-The automation contract remains JSON/NDJSON-first with explicit timeouts,
+The automation contract remains JSON-first with explicit timeouts,
 documented exit classes, confirmation controls, and mutation dry runs.
 
 The initial provider adapters target:
@@ -47,7 +46,7 @@ while retaining Node.js as its runtime:
 
 ```sh
 npm run package:npm
-npm install --global ./dmbridge-1.0.0.tgz
+npm install --global ./dmbridge-2.0.0.tgz
 dmbridge version --pretty
 ```
 
@@ -57,7 +56,7 @@ run:
 
 ```sh
 npm run package:executable
-./artifacts/dmbridge-1.0.0-macos-arm64 version --pretty
+./artifacts/dmbridge-2.0.0-macos-arm64 version --pretty
 ```
 
 The source, tests, and npm package remain Node-based. Deno is used only as a
@@ -89,23 +88,11 @@ Failure:
 {"account":"personal","command":"x conversations list","error":{"code":"provider.requestFailed","details":{},"message":"…","retrySafety":"safe"},"ok":false,"protocolVersion":1,"provider":"x","requestID":"…"}
 ```
 
-Use `--ndjson` or `--output ndjson` for a versioned stream. Collection results
-emit one `item` record per value followed by a `summary` record. Scalar results
-emit one `result` record, and failures emit one `error` record. Every line carries
-the protocol version and complete command context:
-
-```json
-{"account":null,"collection":"commands","command":"help","index":0,"ok":true,"protocolVersion":1,"provider":null,"recordType":"item","requestID":"…","result":"dmbridge accounts list [provider]"}
-{"account":null,"collection":"commands","command":"help","index":1,"ok":true,"protocolVersion":1,"provider":null,"recordType":"item","requestID":"…","result":"dmbridge version"}
-```
-
-`dmbridge <provider> doctor --schema stream.record` returns the JSON Schema for
-NDJSON lines. Schema version 4 also contains the protocol-v1 success and error
-envelope schemas.
+Schema version 5 contains the protocol-v1 success and error envelope schemas.
 Object keys are serialized canonically. Local inventories and derived resource
 sets are sorted; provider pages retain their documented provider order.
 
-stdout is reserved for primary JSON or NDJSON results. Progress, warnings, and
+stdout is reserved for primary JSON results. Progress, warnings, and
 human-readable diagnostics go only to stderr and can be controlled with
 `--quiet`, `-v` / `--verbose`, or
 `--verbosity quiet|normal|verbose|debug`. `--no-color` is supported; structured
@@ -141,7 +128,7 @@ are accepted before or after command words:
 dmbridge --help
 dmbridge x messages --help
 dmbridge x --version
-dmbridge accounts list x --output ndjson
+dmbridge accounts list x --output json
 dmbridge x doctor --timeout 30s --verbose
 ```
 

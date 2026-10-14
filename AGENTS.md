@@ -30,8 +30,8 @@ external service, or credential mechanism without explicit owner approval.
 ## Architecture and ownership
 
 - `src/commands.ts` owns the public command catalog and generic dispatch.
-- `src/protocol.ts` owns public schemas, JSON and NDJSON envelopes, request
-  input parsing, and standardized errors.
+- `src/protocol.ts` owns public schemas, JSON envelopes, request input parsing,
+  and standardized errors.
 - `src/auth.ts` owns provider-neutral secure local storage primitives.
 - `src/providers/types.ts` owns the provider interface.
 - Each provider owns its implementation, credentials, setup flow, state, and
@@ -46,13 +46,12 @@ registered definitions.
 
 ## CLI contract
 
-- Preserve `--help`, `-h`, `--version`, JSON, NDJSON, non-interactive,
-  timeout, color, quiet, verbosity, and dry-run behavior across appropriate
-  commands.
+- Preserve `--help`, `-h`, `--version`, JSON, non-interactive, timeout, color,
+  quiet, verbosity, and dry-run behavior across appropriate commands.
 - Write primary results only to stdout. Write progress, warnings, and
   diagnostics only to stderr.
-- Keep JSON envelopes and NDJSON records versioned. Treat a published schema
-  version as immutable; bump `SCHEMA_VERSION` for incompatible contract changes.
+- Keep JSON envelopes versioned. Treat a published schema version as immutable;
+  bump `SCHEMA_VERSION` for incompatible contract changes.
 - Keep ordering deterministic where dmbridge owns it. Use ISO 8601 timestamps
   and explicit unit-bearing names such as `bytes` and `timeoutMs`.
 - Accept structured requests and secrets from files or stdin, never secret
@@ -79,6 +78,11 @@ If an XChat passcode is rejected, forget it immediately so unattended calls do
 not exhaust finite attempts.
 
 ## Packaging and release
+
+Every owner-requested repository change must update the package version using
+semantic versioning and keep the root `package-lock.json` version synchronized.
+Use a patch bump for backward-compatible fixes or documentation, a minor bump
+for backward-compatible features, and a major bump for breaking public changes.
 
 `npm run package:npm` creates and checksums the installable package tarball.
 Installing that tarball globally exposes the Node-backed `dmbridge` executable.

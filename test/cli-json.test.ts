@@ -72,16 +72,16 @@ test("CLI writes a single JSON envelope for success and errors", async () => {
   );
 });
 
-test("CLI global controls provide scoped help, version, JSON, NDJSON, and diagnostics", async () => {
+test("CLI global controls provide scoped help, version, JSON, and diagnostics", async () => {
   const home = await mkdtemp(join(tmpdir(), "dmbridge-controls-"));
 
   for (const args of [["--version"], ["x", "--version"]]) {
     const envelope = JSON.parse((await runCLI(args)).stdout) as {
       result: { version: string; protocolVersion: number; schemaVersion: number };
     };
-    assert.equal(envelope.result.version, "1.0.0");
+    assert.equal(envelope.result.version, "2.0.0");
     assert.equal(envelope.result.protocolVersion, 1);
-    assert.equal(envelope.result.schemaVersion, 4);
+    assert.equal(envelope.result.schemaVersion, 5);
   }
 
   const scoped = JSON.parse(
@@ -99,21 +99,21 @@ test("CLI global controls provide scoped help, version, JSON, NDJSON, and diagno
     assert.equal(JSON.parse(result.stdout).ok, true);
   }
 
-  const ndjson = await runCLI(["help", "--ndjson"]);
-  const records = ndjson.stdout.trim().split("\n").map((line) =>
-    JSON.parse(line) as {
-      protocolVersion: number;
-      recordType: string;
-      collection: string;
-      count?: number;
-      result: unknown;
+  for (const args of [
+    ["accounts", "list", "--ndjson"],
+    ["help", "--output", "ndjson"],
+  ]) {
+    await assert.rejects(runCLI(args), (error: unknown) => {
+      const failure = error as { code?: number; stdout?: string };
+      assert.equal(failure.code, 2);
+      const envelope = JSON.parse(failure.stdout ?? "{}") as {
+        error?: { code?: string; message?: string };
+      };
+      assert.equal(envelope.error?.code, "bridge.invalidRequest");
+      assert.match(envelope.error?.message ?? "", /unknown option|output must be json/);
+      return true;
     });
-  assert.ok(records.length > 2);
-  assert.ok(records.slice(0, -1).every((record) => record.recordType === "item"));
-  assert.ok(records.every((record) => record.protocolVersion === 1));
-  assert.equal(records.at(-1)?.recordType, "summary");
-  assert.equal(records.at(-1)?.collection, "commands");
-  assert.equal(records.at(-1)?.count, records.length - 1);
+  }
 
   const verbose = await runCLI(["help", "--verbose", "--no-color"]);
   assert.match(verbose.stderr, /executing help/);
@@ -515,7 +515,7 @@ test("doctor combines capabilities with versioned schema discovery", async () =>
     };
   };
   assert.equal(listed.result.capabilities.provider, "x");
-  assert.equal(listed.result.contracts.schemaVersion, 4);
+  assert.equal(listed.result.contracts.schemaVersion, 5);
   for (const name of [
     "attachment",
     "attachment.download",
@@ -536,19 +536,18 @@ test("doctor combines capabilities with versioned schema discovery", async () =>
     "participant",
     "reaction",
     "reactions.result",
-    "stream.record",
   ]) {
     assert.ok(listed.result.contracts.names.includes(name), `missing schema ${name}`);
   }
   const fetched = listed.result.contracts.selected;
   assert.equal(fetched.name, "message");
-  assert.match(fetched.schema.$id, /\/v4\/message\.json$/);
+  assert.match(fetched.schema.$id, /\/v5\/message\.json$/);
   assert.equal(
     fetched.schema.$schema,
     "https://json-schema.org/draft/2020-12/schema",
   );
   assert.match(
     fetched.schema.properties.attachments.items.$ref,
-    /\/v4\/attachment\.json$/,
+    /\/v5\/attachment\.json$/,
   );
 });

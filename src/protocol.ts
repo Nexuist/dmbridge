@@ -8,7 +8,7 @@ import {
 } from "./providers/x/credentials.js";
 
 export const PROTOCOL_VERSION = 1 as const;
-export const SCHEMA_VERSION = 4 as const;
+export const SCHEMA_VERSION = 5 as const;
 
 export const ProviderIDSchema = z.enum(["x", "instagram"]);
 export const RetrySafetySchema = z.enum(["safe", "unsafe", "never"]);
@@ -227,39 +227,6 @@ export const ErrorEnvelopeSchema = z.object({
   }),
 });
 
-const StreamContextSchema = z.object({
-  ok: z.boolean(),
-  protocolVersion: z.literal(PROTOCOL_VERSION),
-  ...CommandContextSchema.shape,
-});
-
-const StreamRecordSchema = z.union([
-  StreamContextSchema.extend({
-    ok: z.literal(true),
-    recordType: z.literal("result"),
-    result: z.unknown(),
-  }),
-  StreamContextSchema.extend({
-    ok: z.literal(true),
-    recordType: z.literal("item"),
-    collection: z.string().min(1),
-    index: z.number().int().min(0),
-    result: z.unknown(),
-  }),
-  StreamContextSchema.extend({
-    ok: z.literal(true),
-    recordType: z.literal("summary"),
-    collection: z.string().min(1),
-    count: z.number().int().min(0),
-    result: z.unknown(),
-  }),
-  StreamContextSchema.extend({
-    ok: z.literal(false),
-    recordType: z.literal("error"),
-    error: ErrorEnvelopeSchema.shape.error,
-  }),
-]);
-
 const ConversationPageSchema = z.object({
   items: z.array(ConversationSchema),
   nextCursor: NullableStringSchema,
@@ -309,7 +276,6 @@ const zodSchemas = {
   }),
   "envelope.success": SuccessEnvelopeSchema,
   "envelope.error": ErrorEnvelopeSchema,
-  "stream.record": StreamRecordSchema,
   "accounts.result": z.object({
     provider: ProviderIDSchema,
     accounts: z.array(z.string().min(1)),
@@ -538,8 +504,6 @@ export const readSecret = async (source: string) => {
   return new TextEncoder().encode(value.replace(/[\r\n]+$/, ""));
 };
 
-export type OutputFormat = "json" | "ndjson";
-
 export const successEnvelope = <T>(
   context: CommandContext,
   result: T,
@@ -581,51 +545,9 @@ const canonicalize = (value: unknown): unknown => {
 const stringify = (value: unknown, pretty = false) =>
   JSON.stringify(canonicalize(value), null, pretty ? 2 : 0);
 
-const ndjsonRecords = (value: Envelope<unknown>) => {
-  const { ok, protocolVersion, provider, account, requestID, command } = value;
-  const context = { ok, protocolVersion, provider, account, requestID, command };
-  if (!value.ok) return [{ ...context, recordType: "error", error: value.error }];
-  const result = value.result;
-  if (result && typeof result === "object" && !Array.isArray(result)) {
-    const object = result as Record<string, unknown>;
-    const collection = ["items", "accounts", "names", "commands"].find(
-      (name) => Array.isArray(object[name]),
-    );
-    if (collection) {
-      const values = object[collection] as unknown[];
-      const summary = Object.fromEntries(
-        Object.entries(object).filter(([name]) => name !== collection),
-      );
-      return [
-        ...values.map((item, index) => ({
-          ...context,
-          recordType: "item",
-          collection,
-          index,
-          result: item,
-        })),
-        {
-          ...context,
-          recordType: "summary",
-          collection,
-          count: values.length,
-          result: summary,
-        },
-      ];
-    }
-  }
-  return [{ ...context, recordType: "result", result }];
-};
-
 export const writeEnvelope = (
   value: Envelope<unknown>,
-  options: { format: OutputFormat; pretty: boolean },
+  options: { pretty: boolean },
 ) => {
-  if (options.format === "ndjson") {
-    for (const record of ndjsonRecords(value)) {
-      process.stdout.write(`${stringify(record)}\n`);
-    }
-    return;
-  }
   process.stdout.write(`${stringify(value, options.pretty)}\n`);
 };

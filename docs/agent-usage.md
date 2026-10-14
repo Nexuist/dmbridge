@@ -24,19 +24,17 @@ For unattended calls, normally include:
 ```
 
 Use `--quiet` when stderr diagnostics are not wanted. Do not combine `--quiet`
-with verbosity flags. Use `--ndjson` for collections that should be processed
-incrementally.
+with verbosity flags.
 
 ## Parsing results
 
-stdout contains exactly the selected JSON or NDJSON protocol. stderr contains
+stdout contains exactly one JSON protocol envelope. stderr contains
 only progress, warnings, and diagnostics. Always check both the process exit
 code and the structured `ok` field.
 
-JSON output is one protocol-v1 envelope. NDJSON collections contain zero or
-more `item` records followed by one `summary` record. Do not treat a summary as
-an item. Retain provider IDs, account names, cursors, conversation IDs, message
-IDs, request IDs, and attachment IDs as opaque strings.
+JSON output is one protocol-v1 envelope. Retain provider IDs, account names,
+cursors, conversation IDs, message IDs, request IDs, and attachment IDs as
+opaque strings.
 
 On failure, inspect:
 

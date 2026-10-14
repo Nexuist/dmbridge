@@ -17,13 +17,13 @@ npm run package:executable
 - The packed file list contains the compiled CLI, README, license, agent usage
   guide, and package metadata, with no source tests or local credentials.
 - The isolated packed-package smoke test can invoke `dmbridge help`,
-  `dmbridge version`, and NDJSON output.
+  `dmbridge version`, and JSON output.
 - Offline tests cover every mutation path and unknown-outcome failure behavior.
 
 ## Contract review
 
 - Help matches the intended public command surface.
-- JSON and NDJSON remain parseable and versioned.
+- JSON remains parseable and versioned.
 - stdout/stderr separation and exit codes match the README.
 - Account-add input is an exact four-variant schema: Instagram credential,
   X OAuth client, X callback URL, or X code/state.
@@ -80,12 +80,12 @@ Before tagging:
    `package-lock.json` version.
 2. Complete the automated, contract, and applicable live read-only gates above.
 3. Commit and push a clean release commit.
-4. Create and push the exact matching tag, such as `v1.0.0` for package version
-   `1.0.0`.
+4. Create and push the exact matching tag, such as `v2.0.0` for package version
+   `2.0.0`.
 
 ```sh
-git tag -a v1.0.0 -m "dmbridge v1.0.0"
-git push origin v1.0.0
+git tag -a v2.0.0 -m "dmbridge v2.0.0"
+git push origin v2.0.0
 ```
 
 The workflow rejects a tag that does not exactly match `v` plus the version in

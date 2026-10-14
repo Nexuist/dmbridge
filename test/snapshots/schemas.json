@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "schemas": {
     "participant": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -28,7 +28,7 @@
         "displayName"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/participant.json"
+      "$id": "https://dmbridge.dev/schemas/v5/participant.json"
     },
     "attachment": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -98,7 +98,7 @@
         "sourceURL"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/attachment.json"
+      "$id": "https://dmbridge.dev/schemas/v5/attachment.json"
     },
     "reaction": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -127,7 +127,7 @@
         "reactedByAuthenticatedUser"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/reaction.json"
+      "$id": "https://dmbridge.dev/schemas/v5/reaction.json"
     },
     "message": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -218,13 +218,13 @@
         "attachments": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/attachment.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/attachment.json"
           }
         },
         "reactions": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/reaction.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/reaction.json"
           }
         },
         "providerType": {
@@ -254,7 +254,7 @@
         "providerType"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/message.json"
+      "$id": "https://dmbridge.dev/schemas/v5/message.json"
     },
     "conversation": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -289,7 +289,7 @@
         "participants": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/participant.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/participant.json"
           }
         },
         "unreadCount": {
@@ -365,7 +365,7 @@
         "archived"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/conversation.json"
+      "$id": "https://dmbridge.dev/schemas/v5/conversation.json"
     },
     "messageRequest": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -376,7 +376,7 @@
           "minLength": 1
         },
         "conversation": {
-          "$ref": "https://dmbridge.dev/schemas/v4/conversation.json"
+          "$ref": "https://dmbridge.dev/schemas/v5/conversation.json"
         },
         "state": {
           "type": "string",
@@ -439,7 +439,7 @@
         "detailReadMarksDelivered"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/messageRequest.json"
+      "$id": "https://dmbridge.dev/schemas/v5/messageRequest.json"
     },
     "capabilities": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -639,7 +639,7 @@
         "limitations"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/capabilities.json"
+      "$id": "https://dmbridge.dev/schemas/v5/capabilities.json"
     },
     "page.conversations": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -648,7 +648,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/conversation.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/conversation.json"
           }
         },
         "nextCursor": {
@@ -663,7 +663,7 @@
         "nextCursor"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/page.conversations.json"
+      "$id": "https://dmbridge.dev/schemas/v5/page.conversations.json"
     },
     "page.messages": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -672,7 +672,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/message.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/message.json"
           }
         },
         "nextCursor": {
@@ -687,7 +687,7 @@
         "nextCursor"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/page.messages.json"
+      "$id": "https://dmbridge.dev/schemas/v5/page.messages.json"
     },
     "page.messageRequests": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -696,7 +696,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/messageRequest.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/messageRequest.json"
           }
         },
         "nextCursor": {
@@ -711,7 +711,7 @@
         "nextCursor"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/page.messageRequests.json"
+      "$id": "https://dmbridge.dev/schemas/v5/page.messageRequests.json"
     },
     "page.messageRequestMessages": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -720,7 +720,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/message.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/message.json"
           }
         },
         "nextCursor": {
@@ -742,7 +742,7 @@
         "hasMoreMessages"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/page.messageRequestMessages.json"
+      "$id": "https://dmbridge.dev/schemas/v5/page.messageRequestMessages.json"
     },
     "mutation.result": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -764,7 +764,7 @@
         "effect"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/mutation.result.json"
+      "$id": "https://dmbridge.dev/schemas/v5/mutation.result.json"
     },
     "envelope.success": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -817,7 +817,7 @@
         "result"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/envelope.success.json"
+      "$id": "https://dmbridge.dev/schemas/v5/envelope.success.json"
     },
     "envelope.error": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -899,288 +899,7 @@
         "error"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/envelope.error.json"
-    },
-    "stream.record": {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "anyOf": [
-        {
-          "type": "object",
-          "properties": {
-            "ok": {
-              "type": "boolean",
-              "const": true
-            },
-            "protocolVersion": {
-              "type": "number",
-              "const": 1
-            },
-            "provider": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "x",
-                    "instagram"
-                  ]
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "account": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "requestID": {
-              "type": "string",
-              "minLength": 1
-            },
-            "command": {
-              "type": "string"
-            },
-            "recordType": {
-              "type": "string",
-              "const": "result"
-            },
-            "result": {}
-          },
-          "required": [
-            "ok",
-            "protocolVersion",
-            "provider",
-            "account",
-            "requestID",
-            "command",
-            "recordType",
-            "result"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "ok": {
-              "type": "boolean",
-              "const": true
-            },
-            "protocolVersion": {
-              "type": "number",
-              "const": 1
-            },
-            "provider": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "x",
-                    "instagram"
-                  ]
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "account": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "requestID": {
-              "type": "string",
-              "minLength": 1
-            },
-            "command": {
-              "type": "string"
-            },
-            "recordType": {
-              "type": "string",
-              "const": "item"
-            },
-            "collection": {
-              "type": "string",
-              "minLength": 1
-            },
-            "index": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 9007199254740991
-            },
-            "result": {}
-          },
-          "required": [
-            "ok",
-            "protocolVersion",
-            "provider",
-            "account",
-            "requestID",
-            "command",
-            "recordType",
-            "collection",
-            "index",
-            "result"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "ok": {
-              "type": "boolean",
-              "const": true
-            },
-            "protocolVersion": {
-              "type": "number",
-              "const": 1
-            },
-            "provider": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "x",
-                    "instagram"
-                  ]
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "account": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "requestID": {
-              "type": "string",
-              "minLength": 1
-            },
-            "command": {
-              "type": "string"
-            },
-            "recordType": {
-              "type": "string",
-              "const": "summary"
-            },
-            "collection": {
-              "type": "string",
-              "minLength": 1
-            },
-            "count": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 9007199254740991
-            },
-            "result": {}
-          },
-          "required": [
-            "ok",
-            "protocolVersion",
-            "provider",
-            "account",
-            "requestID",
-            "command",
-            "recordType",
-            "collection",
-            "count",
-            "result"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "ok": {
-              "type": "boolean",
-              "const": false
-            },
-            "protocolVersion": {
-              "type": "number",
-              "const": 1
-            },
-            "provider": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "x",
-                    "instagram"
-                  ]
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "account": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "requestID": {
-              "type": "string",
-              "minLength": 1
-            },
-            "command": {
-              "type": "string"
-            },
-            "recordType": {
-              "type": "string",
-              "const": "error"
-            },
-            "error": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "retrySafety": {
-                  "type": "string",
-                  "enum": [
-                    "safe",
-                    "unsafe",
-                    "never"
-                  ]
-                },
-                "details": {
-                  "type": "object",
-                  "additionalProperties": true
-                }
-              },
-              "required": [
-                "code",
-                "message",
-                "retrySafety",
-                "details"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "ok",
-            "protocolVersion",
-            "provider",
-            "account",
-            "requestID",
-            "command",
-            "recordType",
-            "error"
-          ],
-          "additionalProperties": false
-        }
-      ],
-      "$id": "https://dmbridge.dev/schemas/v4/stream.record.json"
+      "$id": "https://dmbridge.dev/schemas/v5/envelope.error.json"
     },
     "accounts.result": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1243,7 +962,7 @@
           "additionalProperties": false
         }
       ],
-      "$id": "https://dmbridge.dev/schemas/v4/accounts.result.json"
+      "$id": "https://dmbridge.dev/schemas/v5/accounts.result.json"
     },
     "doctor": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1305,7 +1024,7 @@
           }
         },
         "capabilities": {
-          "$ref": "https://dmbridge.dev/schemas/v4/capabilities.json"
+          "$ref": "https://dmbridge.dev/schemas/v5/capabilities.json"
         },
         "contracts": {
           "type": "object",
@@ -1363,7 +1082,7 @@
         "contracts"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/doctor.json"
+      "$id": "https://dmbridge.dev/schemas/v5/doctor.json"
     },
     "reactions.result": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1372,7 +1091,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "https://dmbridge.dev/schemas/v4/reaction.json"
+            "$ref": "https://dmbridge.dev/schemas/v5/reaction.json"
           }
         }
       },
@@ -1380,7 +1099,7 @@
         "items"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/reactions.result.json"
+      "$id": "https://dmbridge.dev/schemas/v5/reactions.result.json"
     },
     "attachment.download": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1413,7 +1132,7 @@
         "sha256"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/attachment.download.json"
+      "$id": "https://dmbridge.dev/schemas/v5/attachment.download.json"
     },
     "accounts.add.request": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1555,7 +1274,7 @@
           "additionalProperties": false
         }
       ],
-      "$id": "https://dmbridge.dev/schemas/v4/accounts.add.request.json"
+      "$id": "https://dmbridge.dev/schemas/v5/accounts.add.request.json"
     },
     "message.send": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1611,7 +1330,7 @@
         "type"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/message.send.json"
+      "$id": "https://dmbridge.dev/schemas/v5/message.send.json"
     },
     "message.edit": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1631,7 +1350,7 @@
         "text"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/message.edit.json"
+      "$id": "https://dmbridge.dev/schemas/v5/message.edit.json"
     },
     "reaction.request": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1646,7 +1365,7 @@
         "reaction"
       ],
       "additionalProperties": false,
-      "$id": "https://dmbridge.dev/schemas/v4/reaction.request.json"
+      "$id": "https://dmbridge.dev/schemas/v5/reaction.request.json"
     }
   }
 }
